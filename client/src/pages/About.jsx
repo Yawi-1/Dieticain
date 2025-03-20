@@ -1,5 +1,5 @@
 import React from 'react';
-import Layout from '../components/Layout';
+import Layout from '../components/Layout/Layout';
 import { FaAppleAlt, FaGraduationCap, FaHandsHelping } from 'react-icons/fa';
 import professional from '../../public/professional.png'
 import cer1 from '../../public/cer1.jpg'

@@ -1,6 +1,5 @@
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import HeroImage from '../../public/HomeImage.jpg'
 
 function Layout({ children }) {
   return (

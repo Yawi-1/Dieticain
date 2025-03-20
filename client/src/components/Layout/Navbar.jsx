@@ -14,7 +14,7 @@ function Navbar() {
   ];
 
   return (
-    <nav className="z-50 bg-white shadow-md sticky top-0 w-full z-10">
+    <nav className="z-50 bg-white shadow-md sticky top-0 w-full">
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex justify-between items-center h-16">
           <Link to="/" className="text-2xl font-bold text-blue-600">

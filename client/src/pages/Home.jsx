@@ -1,10 +1,14 @@
-import React from "react";
-import Layout from "../components/Layout";
+import React, { useEffect } from "react";
+import Layout from "../components/Layout/Layout";
 import HeroImage from "../../public/HomeImage.jpg";
 import { Link } from "react-router-dom";
-import ServiceCard from "../components/ServiceCard";
+import HomeServiceCard from "../components/Home/HomeServiceCard";
+import FAQAccordion from "../components/Services/FAQAccordion ";
 
 const Homepage = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const services = [
     {
       title: "Personalized Meal Plans",
@@ -59,19 +63,20 @@ const Homepage = () => {
       >
         <div className="absolute top-0 left-0 w-full h-full bg-black/50"></div>
         <div className="relative z-10 text-center md:p-8 bg-black/20 rounded">
-  <h1 className="text-4xl p-1 md:text-6xl lg:text-8xl text-gray-100 font-bold mb-4">
-    Welcome to NutriCare
-  </h1>
-  <p className=" text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-gray-200 font-bold   md:leading-normal mb-8 md:mb-12 mx-auto max-w-2xl md:max-w-3xl">
-    Discover personalized nutrition plans, track your daily progress with our smart tools, 
-    and receive expert guidance to help you achieve your wellness goals - all through 
-    our intuitive health platform designed for every lifestyle.
-  </p>
-  <button className="cursor-pointer bg-orange-400 px-8 py-3 rounded-full hover:bg-white hover:text-orange-400 border-orange-400 border-2 transition-all duration-300">
-    Learn More
-  </button>
-</div>
-</div>
+          <h1 className="text-4xl p-1 md:text-6xl lg:text-8xl text-gray-100 font-bold mb-4">
+            Welcome to NutriCare
+          </h1>
+          <p className=" text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-gray-200 font-bold   md:leading-normal mb-8 md:mb-12 mx-auto max-w-2xl md:max-w-3xl">
+            Discover personalized nutrition plans, track your daily progress
+            with our smart tools, and receive expert guidance to help you
+            achieve your wellness goals - all through our intuitive health
+            platform designed for every lifestyle.
+          </p>
+          <button className="cursor-pointer bg-orange-400 px-8 py-3 rounded-full hover:bg-white hover:text-orange-400 border-orange-400 border-2 transition-all duration-300">
+            Learn More
+          </button>
+        </div>
+      </div>
 
       {/* Services Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
@@ -81,7 +86,7 @@ const Homepage = () => {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service, index) => (
-              <ServiceCard
+              <HomeServiceCard
                 key={index}
                 title={service.title}
                 description={service.description}
@@ -104,13 +109,14 @@ const Homepage = () => {
       {/* Parallox effect  */}
 
       <div
-       style={{
-        backgroundImage: `url(${HeroImage})`,
-        backgroundSize: "cover",
-      }}
+        style={{
+          backgroundImage: `url(${HeroImage})`,
+          backgroundSize: "cover",
+        }}
         className="relative h-96 z-10 bg-fixed"
       >
         <div className="absolute top-0 left-0 w-full h-full bg-black/50"></div>
+      
       </div>
       <section className="py-16 bg-gray-100">
         <div className="container mx-auto text-center">
@@ -136,7 +142,11 @@ const Homepage = () => {
             ))}
           </div>
         </div>
-      </section> 
+      </section>
+      <div className="my-8">
+        <h1 className="text-4xl text-center p-4 text-gray-800">Frequently Asked Questions</h1>
+      <FAQAccordion />
+      </div>
     </Layout>
   );
 };

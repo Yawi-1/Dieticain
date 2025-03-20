@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const ServiceCard = ({ title, description, image, link }) => (
+const HomeServiceCard = ({ title, description, image, link }) => (
   <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 group">
     <div className="overflow-hidden">
       <img 
@@ -23,4 +23,4 @@ const ServiceCard = ({ title, description, image, link }) => (
   </div>
 );
 
-export default ServiceCard;
+export default HomeServiceCard;
