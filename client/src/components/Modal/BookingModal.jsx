@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-const BookingModal = ({ isOpen, onClose, service, handleSubmit }) => {
+const BookingModal = ({ isOpen, onClose, service }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -23,6 +23,10 @@ const BookingModal = ({ isOpen, onClose, service, handleSubmit }) => {
       [e.target.name]: e.target.value
     });
   };
+
+  const handleSubmit=()=>{
+    
+  }
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();

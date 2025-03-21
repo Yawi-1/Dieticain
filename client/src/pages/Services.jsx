@@ -2,16 +2,19 @@ import React,{useEffect} from "react";
 import Layout from "../components/Layout/Layout";
 import ServiceCard from "../components/Services/ServiceCard";
 import {  ServiceData } from "../assets/data";
-import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchService } from "../Redux/serviceSlice";
+
 const Services = () => {
+   const {services} = useSelector((state)=>state.service);
+   const dispatch = useDispatch();
 
-   
-
-
-
+  
   useEffect(()=>{
-    window.scrollTo(0,0)
+    window.scrollTo(0,0);
+    dispatch(fetchService());
 },[])
+
   return (
     <Layout>
       <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -31,7 +34,7 @@ const Services = () => {
 
           {/* Service Card  */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {ServiceData.map((service, index) => (
+            {services.map((service, index) => (
               <ServiceCard service={service} key={index+1}/>
             ))}
           </div>

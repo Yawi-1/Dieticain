@@ -4,6 +4,19 @@ const uploadOnCloudinary = require("../utils/cloudinary.js");
 const addService = async (req, res) => {
   try {
     const { title, description, price, duration } = req.body;
+    if (!title) {
+      return res.status(400).json({ message: "Title is required" });
+    }
+    if (!description) {
+      return res.status(400).json({ message: "Description is required" });
+    }
+    if (!price) {
+      return res.status(400).json({ message: "Price is required" });
+    }
+    if (!duration) {
+      return res.status(400).json({ message: "Duration is required" });
+    }
+
     const file = req.file;
     if (!file) {
       return res.status(400).json({ message: "Please upload a file" });
@@ -22,7 +35,7 @@ const addService = async (req, res) => {
       .json({ message: "Products Added Successfully ... ", data: service });
     console.log(service);
   } catch (error) {
-    console.log(error);
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -31,10 +44,63 @@ const getServices = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
-   const services =  await Services.find({}).skip(skip).limit(limit);
-   res.status(200).json({ message: "Services Retrieved Successfully...", data: services });
+    const services = await Services.find({}).skip(skip).limit(limit);
+    res
+      .status(200)
+      .json({ message: "Services Retrieved Successfully...", data: services });
   } catch (error) {
-    console.log(error);
+    res.status(400).json({ message: error.message });
   }
 };
-module.exports = { addService,getServices };
+
+const getServiceById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const service = await Services.findById(id);
+    if (!service) {
+      return res.status(404).json({ message: "Service Not Found" });
+    }
+    res
+      .status(200)
+      .json({ message: "Service Retrieved Successfully...", data: service });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+const deleteService = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const service = await Services.findByIdAndDelete(id);
+    if (!service) {
+      return res.status(404).json({ message: "Service Not Found" });
+    }
+    res
+      .status(200)
+      .json({ message: "Service Deleted Successfully...", data: service });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+const updateService = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const service = await Services.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    if (!service) {
+      return res.status(404).json({ message: "Service Not Found" });
+    }
+    res
+      .status(200)
+      .json({ message: "Service updated successfully..", data: service });
+  } catch (error) {}
+};
+module.exports = {
+  addService,
+  getServices,
+  getServiceById,
+  deleteService,
+  updateService,
+};

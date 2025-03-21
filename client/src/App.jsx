@@ -4,6 +4,7 @@ import About from "./pages/About";
 import Services from "./pages/Services";
 import ServiceDetail from "./components/Services/ServiceDetail";
 import {Routes,Route,Navigate} from 'react-router-dom'
+import ServiceForm from "./components/Services/ServiceForm";
 const App = () => {
 
 
@@ -15,6 +16,7 @@ const App = () => {
       <Route path =  '/services' element={  <Services />}/>
       <Route path =  '/services/:id' element={  <ServiceDetail />}/>
       <Route path =  '*' element={  <Navigate to='/' replace />}/>
+      <Route path='/add' element={<ServiceForm/>}/>
     
       
     </Routes>

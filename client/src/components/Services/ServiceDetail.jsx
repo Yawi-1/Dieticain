@@ -1,27 +1,38 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Layout from '../Layout/Layout';
 import FAQAccordion from './FAQAccordion ';
 import BookingModal from '../Modal/BookingModal'
-const services = [
-  {
-    id: 1,
-    title: "Personalized Meal Plans",
-    description: "Customized nutrition plans tailored to your health goals, dietary preferences, and lifestyle. Includes weekly check-ins and adjustments.",
-    price: "$149/month",
-    duration: "Ongoing support",
-    image: "https://images.unsplash.com/photo-1543363136-3fdb62e11be5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-  }
-];
-
+import { useSelector,useDispatch } from 'react-redux';
+import { fetchService } from '../../Redux/serviceSlice';
+ 
 const ServiceDetail = () => {
   const { id } = useParams();
-  const service = services.find(service => service.id === parseInt(id));
+  const dispatch = useDispatch();
+  const { services, status } = useSelector((state) => state.service);
   const [showModal, setShowModal] = React.useState(false);
+  
+  useEffect(() => {
+    dispatch(fetchService());
+  }, [dispatch]);
+
+  // Agar API call ho rahi hai, toh "Loading..." dikhana
+  if (status === 'loading') {
+    return <div className="text-center py-20">Loading...</div>;
+  }
+
+  // Jab data aa jaye tabhi service ko find karo
+  const service = services.find(service => service._id === id);
 
   if (!service) {
-    return <div className="text-center py-20">Service not found</div>;
+    return (
+      <div className="text-center py-20">
+        Service not found
+        <Link to='/services' className="block text-blue-500 mt-4">Go Back</Link>
+      </div>
+    );
   }
+
 
   const handleSubmit = ()=>{
     alert('Success')
