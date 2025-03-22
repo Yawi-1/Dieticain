@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const HomeServiceCard = ({ title, description, image, link }) => (
+const HomeServiceCard = ({ title, description, image,id }) => (
   <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 group">
     <div className="overflow-hidden">
       <img 
@@ -14,7 +14,7 @@ const HomeServiceCard = ({ title, description, image, link }) => (
       <h3 className="text-xl font-semibold text-gray-800 mb-2">{title}</h3>
       <p className="text-gray-600 mb-4">{description}</p>
       <Link 
-        to={link}
+        to={`/services/${id}`}
         className="inline-block bg-orange-400 text-white px-4 py-2 rounded-full hover:bg-orange-500 transition-colors duration-200"
       >
         Learn More

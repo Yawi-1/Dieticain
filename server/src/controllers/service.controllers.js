@@ -1,4 +1,5 @@
 const Services = require("../models/service.model.js");
+const Booking = require("../models/booking.model.js");
 const uploadOnCloudinary = require("../utils/cloudinary.js");
 
 const addService = async (req, res) => {
@@ -29,12 +30,12 @@ const addService = async (req, res) => {
       duration,
       image: imageUrl || file?.path,
     });
-
     res
       .status(201)
       .json({ message: "Products Added Successfully ... ", data: service });
     console.log(service);
   } catch (error) {
+    console.log(error);
     res.status(400).json({ message: error.message });
   }
 };
@@ -97,10 +98,35 @@ const updateService = async (req, res) => {
       .json({ message: "Service updated successfully..", data: service });
   } catch (error) {}
 };
+
+const bookService = async (req, res) => {
+  try {
+    const { name, email, price, mode, serviceId } = req.body;
+    const service = await Services.findById(serviceId);
+    if (!service) {
+      return res.status(404).json({ message: "Service Not Found" });
+    }
+    const booking = new Booking({
+      name,
+      email,
+      price,
+      mode,
+      serviceId,
+    });
+    const result = await booking.save();
+    res
+      .status(200)
+      .json({ message: "Service booked successfully...", data: result });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
 module.exports = {
   addService,
   getServices,
   getServiceById,
   deleteService,
   updateService,
+  bookService,
 };

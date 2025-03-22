@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const API_URL = "http://localhost:3000";
+
 export const fetchService = createAsyncThunk(
   "service/fetchService",
   async () => {
@@ -17,10 +18,32 @@ export const fetchService = createAsyncThunk(
 export const addService = createAsyncThunk(
   "fservice/addService",
   async (formData) => {
-    const response = await axios.post(`${API_URL}/api/service`, formData);
-    return response.data.data;
+    try {
+      const response = await axios.post(`${API_URL}/api/service`, formData);
+      return response.data.data;
+    } catch (error) {
+      console.log(error)
+      throw error.response?.data || error.message;
+    }
   }
 );
+
+export const bookService = createAsyncThunk(
+  "fservice/bookService",
+  async (data) => {
+    try {
+      const response = await axios.post(`${API_URL}/api/service/book`,data,{
+        headers: {
+          'Content-Type': 'application/json',
+          },
+      });
+      console.log('Backend response :',response)
+      return response.data.data;
+    } catch (error) {
+      console.log(error)
+    }
+  }
+)
 
 const serviceSlice = createSlice({
   name: "services",
@@ -53,7 +76,17 @@ const serviceSlice = createSlice({
       .addCase(addService.rejected, (state, action) => {
         state.error = action.payload;
         state.status = "failed";
-      });
+      })
+      .addCase(bookService.pending, (state, action) => {
+        state.status === "loading";
+      })
+      .addCase(bookService.fulfilled, (state, action) => {
+        state.status = "success";
+      })
+      .addCase(bookService.rejected, (state, action) => {
+        state.error = action.payload;
+        state.status = "failed";
+      })
   },
 });
 

@@ -1,40 +1,35 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout/Layout";
 import HeroImage from "../../public/HomeImage.jpg";
 import { Link } from "react-router-dom";
 import HomeServiceCard from "../components/Home/HomeServiceCard";
 import FAQAccordion from "../components/Services/FAQAccordion ";
+import { useSelector } from "react-redux";
+import { fetchService } from "../Redux/serviceSlice";
+import { useDispatch } from "react-redux";
 
 const Homepage = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-  const services = [
-    {
-      title: "Personalized Meal Plans",
-      description:
-        "Customized nutrition plans tailored to your unique dietary needs and health goals.",
-      image:
-        "https://images.unsplash.com/photo-1543363136-3fdb62e11be5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-      link: "/services/meal-plans",
-    },
-    {
-      title: "Weight Management",
-      description:
-        "Sustainable strategies for healthy weight loss or gain with expert guidance.",
-      image:
-        "https://images.unsplash.com/photo-1543363136-3fdb62e11be5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-      link: "/services/weight-management",
-    },
-    {
-      title: "Sports Nutrition",
-      description:
-        "Optimize your athletic performance with science-backed nutrition strategies.",
-      image:
-        "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-      link: "/services/sports-nutrition",
-    },
-  ];
+  const dispatch = useDispatch();
+const { services } = useSelector(state => state.service);
+const [featured, setFeatured] = useState([]);
+
+useEffect(() => {
+  // Fetch services when component mounts
+  dispatch(fetchService());
+  window.scrollTo(0, 0);
+  console.log('Window Rendering...')
+}, [dispatch]); // dispatch is stable, safe to include
+
+useEffect(() => {
+  if (services?.length > 0) {
+    // Fisher-Yates shuffle algorithm
+    const shuffled = [...services].sort(() => 0.5 - Math.random());
+    setFeatured(shuffled.slice(0, 3));
+    console.log('Random services selected');
+  }
+}, [services]);
+ 
+    
 
   const testimonials = [
     {
@@ -85,13 +80,13 @@ const Homepage = () => {
             Our Services
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, index) => (
+            {featured.map((service, index) => (
               <HomeServiceCard
                 key={index}
                 title={service.title}
                 description={service.description}
                 image={service.image}
-                link={service.link}
+                id={service._id}
               />
             ))}
           </div>

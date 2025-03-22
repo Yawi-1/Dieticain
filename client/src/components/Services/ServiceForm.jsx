@@ -16,26 +16,23 @@ const ServiceForm = () => {
   const [preview, setPreview] = useState("");
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result);
-        setFormData({
-          ...formData,
-          image: reader.result,
-        });
-      };
-      reader.readAsDataURL(file);
+    const { name, type, value, files } = e.target;
+  
+    if (type === "file" && files.length > 0) {
+      const file = files[0];
+      setFormData((prev) => ({ ...prev, [name]: file }));
+  
+      // Correct way to create an object URL
+      const imageUrl = URL.createObjectURL(file);
+      setPreview(imageUrl);
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
+  
+  
+
+  
 
   const handleRemoveImage = () => {
     setPreview("");
@@ -45,9 +42,22 @@ const ServiceForm = () => {
   const dispatch = useDispatch();
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addService(formData));
+  
+    // Convert state object into FormData for file upload
+    const formDataToSend = new FormData();
+    formDataToSend.append("title", formData.title);
+    formDataToSend.append("description", formData.description);
+    formDataToSend.append("price", formData.price);
+    formDataToSend.append("duration", formData.duration);
     
+    if (formData.image) {
+      formDataToSend.append("image", formData.image); // Append file
+    }
+  
+    // Dispatch the action
+    dispatch(addService(formDataToSend));
   };
+  
 
   return (
     <Layout>
@@ -163,7 +173,7 @@ const ServiceForm = () => {
                 type="file"
                 id="image"
                 name="image"
-                onChange={handleImageChange}
+                onChange={handleChange}
                 className="hidden"
                 accept="image/*"
                 required

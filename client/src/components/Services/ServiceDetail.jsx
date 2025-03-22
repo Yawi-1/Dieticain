@@ -14,6 +14,7 @@ const ServiceDetail = () => {
   
   useEffect(() => {
     dispatch(fetchService());
+    window.scroll(0,0)
   }, [dispatch]);
 
   // Agar API call ho rahi hai, toh "Loading..." dikhana
@@ -59,7 +60,7 @@ const ServiceDetail = () => {
               <img
                 src={service.image}
                 alt={service.title}
-                className="w-full h-full object-cover"
+                className="w-full aspect-square object-center"
               />
             </div>
 
