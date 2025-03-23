@@ -21,3 +21,21 @@ body {
   .delay-700 { animation-delay: 0.7s; }
   .delay-800 { animation-delay: 0.8s; }
   .delay-900 { animation-delay: 0.9s; }
+  .fade-enter {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  .fade-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 500ms ease-in;
+  }
+  .fade-exit {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .fade-exit-active {
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 500ms ease-out;
+  }

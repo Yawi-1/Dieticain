@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import Layout from "../components/Layout/Layout";
-import HeroImage from "../../public/HomeImage.jpg";
 import { Link } from "react-router-dom";
-import HomeServiceCard from "../components/Home/HomeServiceCard";
-import FAQAccordion from "../components/Services/FAQAccordion ";
 import { useSelector } from "react-redux";
 import { fetchService } from "../Redux/serviceSlice";
 import { useDispatch } from "react-redux";
+import Layout from "../components/Layout/Layout";
+import HeroImage from "../../public/HomeImage.jpg";
+import FAQAccordion from "../components/Services/FAQAccordion ";
+import HomeServiceCard from "../components/Home/HomeServiceCard";
+import Testimonials from "../components/Home/Testimonials";
 
 const Homepage = () => {
   const dispatch = useDispatch();
@@ -31,20 +32,7 @@ useEffect(() => {
  
     
 
-  const testimonials = [
-    {
-      name: "John Doe",
-      feedback:
-        "NutriCare completely transformed my eating habits! Thanks to their expert guidance, I feel healthier and more energetic than ever.",
-      image: "https://randomuser.me/api/portraits/men/32.jpg",
-    },
-    {
-      name: "Sarah Smith",
-      feedback:
-        "I struggled with weight loss for years. NutriCare’s diet plan made it so easy and effective. I highly recommend them!",
-      image: "https://randomuser.me/api/portraits/women/44.jpg",
-    },
-  ];
+
 
   return (
     <Layout>
@@ -114,29 +102,7 @@ useEffect(() => {
       
       </div>
       <section className="py-16 bg-gray-100">
-        <div className="container mx-auto text-center">
-          <h2 className="text-4xl font-bold text-gray-800 mb-8">
-            What Our Clients Say
-          </h2>
-          <div className="flex flex-col md:flex-row justify-center items-center gap-8">
-            {testimonials.map((testimonial, index) => (
-              <div
-                key={index}
-                className="bg-white p-6 shadow-lg rounded-lg max-w-md text-center"
-              >
-                <img
-                  src={testimonial.image}
-                  alt={testimonial.name}
-                  className="w-16 h-16 mx-auto rounded-full mb-4"
-                />
-                <p className="text-gray-600 italic">"{testimonial.feedback}"</p>
-                <h4 className="mt-4 font-semibold text-gray-800">
-                  - {testimonial.name}
-                </h4>
-              </div>
-            ))}
-          </div>
-        </div>
+       <Testimonials/>
       </section>
       <div className="my-8">
         <h1 className="text-4xl text-center p-4 text-gray-800">Frequently Asked Questions</h1>
