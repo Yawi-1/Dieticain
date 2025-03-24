@@ -11,29 +11,26 @@ import Testimonials from "../components/Home/Testimonials";
 
 const Homepage = () => {
   const dispatch = useDispatch();
-const { services } = useSelector(state => state.service);
-const [featured, setFeatured] = useState([]);
+  const { services } = useSelector((state) => state.service);
+  const [featured, setFeatured] = useState([]);
 
-useEffect(() => {
-  // Fetch services when component mounts
-  dispatch(fetchService());
-  window.scrollTo(0, 0);
-  console.log('Window Rendering...')
-}, [dispatch]); // dispatch is stable, safe to include
+  useEffect(() => {
+    // Fetch services when component mounts
+    dispatch(fetchService());
+    window.scrollTo(0, 0);
+    console.log("Window Rendering...");
+  }, [dispatch]);
 
-useEffect(() => {
-  if (services?.length > 0) {
-    // Fisher-Yates shuffle algorithm
-    const shuffled = [...services].sort(() => 0.5 - Math.random());
-    setFeatured(shuffled.slice(0, 3));
-    console.log('Random services selected');
-  }
-}, [services]);
+  useEffect(() => {
+    if (services?.length > 0) {
+      // Fisher-Yates shuffle algorithm
+      const shuffled = [...services].sort(() => 0.5 - Math.random());
+      setFeatured(shuffled.slice(0, 3));
+      console.log("Random services selected");
+    }
+  }, [services]);
+
  
-    
-
-
-
   return (
     <Layout>
       {/* Hero Section */}
@@ -46,7 +43,7 @@ useEffect(() => {
       >
         <div className="absolute top-0 left-0 w-full h-full bg-black/50"></div>
         <div className="relative z-10 text-center md:p-8 bg-black/20 rounded">
-          <h1 className="text-4xl p-1 md:text-6xl lg:text-8xl text-gray-100 font-bold mb-4">
+          <h1 className="text-4xl main-text p-1 md:text-6xl lg:text-8xl text-gray-100 font-bold mb-4">
             Welcome to NutriCare
           </h1>
           <p className=" text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-gray-200 font-bold   md:leading-normal mb-8 md:mb-12 mx-auto max-w-2xl md:max-w-3xl">
@@ -99,14 +96,15 @@ useEffect(() => {
         className="relative h-96 z-10 bg-fixed"
       >
         <div className="absolute top-0 left-0 w-full h-full bg-black/50"></div>
-      
       </div>
       <section className="py-16 bg-gray-100">
-       <Testimonials/>
+        <Testimonials />
       </section>
       <div className="my-8">
-        <h1 className="text-4xl text-center p-4 text-gray-800">Frequently Asked Questions</h1>
-      <FAQAccordion />
+        <h1 className="text-4xl text-center p-4 text-gray-800">
+          Frequently Asked Questions
+        </h1>
+        <FAQAccordion />
       </div>
     </Layout>
   );

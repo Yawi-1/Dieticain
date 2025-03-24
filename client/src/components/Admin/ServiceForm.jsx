@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import Layout from "../Layout/Layout";
 import { IoImageOutline } from "react-icons/io5";
 import { MdClose } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { addService } from "../../Redux/serviceSlice";
+import AdminLayout from "./AdminLayout/AdminLayout";
 
 const ServiceForm = () => {
   const [formData, setFormData] = useState({
@@ -60,9 +60,10 @@ const ServiceForm = () => {
   
 
   return (
-    <Layout>
-      <div className="bg-gray-100 flex items-center justify-center md:p-4">
-        <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6">
+
+
+      <div className=" bg-gray-100 flex items-center justify-center md:p-4">
+        <div className="w-full max-w-xl bg-white rounded-lg shadow-lg p-6">
           <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
             Add New Service
           </h2>
@@ -210,7 +211,6 @@ const ServiceForm = () => {
           </form>
         </div>
       </div>
-    </Layout>
   );
 };
 

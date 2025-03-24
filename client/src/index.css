@@ -39,3 +39,19 @@ body {
     transform: translateY(-20px);
     transition: all 500ms ease-out;
   }
+
+  .main-text{
+    animation: textEffect 1s linear;
+    transition: all;
+  }
+
+  @keyframes textEffect {
+    from{
+      transform: scale(0.7);
+      opacity: 0.1;
+    }
+    to{
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
