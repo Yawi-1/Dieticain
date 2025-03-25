@@ -54,7 +54,6 @@ const Testimonials = () => {
       <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6 md:mb-8">
         What Our Clients Say
       </h2>
-      
       <div className="relative min-h-[400px] md:min-h-[300px]">
         {testimonials.map((testimonial, index) => (
           <div

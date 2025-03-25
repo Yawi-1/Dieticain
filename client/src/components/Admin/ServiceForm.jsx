@@ -62,155 +62,135 @@ const ServiceForm = () => {
   return (
 
 
-      <div className=" bg-gray-100 flex items-center justify-center md:p-4">
-        <div className="w-full max-w-xl bg-white rounded-lg shadow-lg p-6">
-          <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
+   <div className="min-h-[calc(100vh-4rem)] bg-gray-50  md:p-6 lg:p-8">
+      <div className="mx-auto max-w-4xl bg-white rounded-xl shadow-sm">
+        <div className="p-6 md:p-8 lg:p-10">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-8">
             Add New Service
           </h2>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Title */}
-            <div>
-              <label
-                htmlFor="title"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Service Title
-              </label>
-              <input
-                type="text"
-                id="title"
-                name="title"
-                value={formData.title}
-                onChange={handleChange}
-                className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2"
-                placeholder="Enter service title"
-                required
-              />
-            </div>
-
-            {/* Description */}
-            <div>
-              <label
-                htmlFor="description"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Description
-              </label>
-              <textarea
-                id="description"
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                rows="3"
-                className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2"
-                placeholder="Enter service description"
-                required
-              />
-            </div>
-
-            {/* Price */}
-            <div>
-              <label
-                htmlFor="price"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Price (₹)
-              </label>
-              <input
-                type="number"
-                id="price"
-                name="price"
-                value={formData.price}
-                onChange={handleChange}
-                min="0"
-                step="0.01"
-                className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2"
-                placeholder="Enter price"
-                required
-              />
-            </div>
-
-            {/* Image Upload */}
-            <div>
-              <label
-                htmlFor="image"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Service Image
-              </label>
-
-              {!preview ? (
-                <label
-                  htmlFor="image"
-                  className="cursor-pointer flex justify-center rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-4"
-                >
-                  <div className="text-center">
-                    <IoImageOutline size={72} className="text-gray-400" />
-                    <p className="text-sm text-gray-600 mt-2">Upload Image</p>
-                  </div>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              {/* Title */}
+              <div className="col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Service Title
                 </label>
-              ) : (
-                <div className="relative mt-2">
-                  <button
-                    type="button"
-                    onClick={handleRemoveImage}
-                    className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 shadow-md hover:bg-red-600"
+                <input
+                  type="text"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-colors"
+                  placeholder="Enter service title"
+                  required
+                />
+              </div>
+
+              {/* Description */}
+              <div className="col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Description
+                </label>
+                <textarea
+                  name="description"
+                  value={formData.description}
+                  onChange={handleChange}
+                  rows="3"
+                  className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-colors"
+                  placeholder="Enter service description"
+                  required
+                />
+              </div>
+
+              {/* Price & Duration */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Price (₹)
+                </label>
+                <input
+                  type="number"
+                  name="price"
+                  value={formData.price}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-colors"
+                  placeholder="0.00"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Duration
+                </label>
+                <input
+                  type="text"
+                  name="duration"
+                  value={formData.duration}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-colors"
+                  placeholder="e.g., 2 hours"
+                  required
+                />
+              </div>
+
+              {/* Image Upload */}
+              <div className="col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Service Image
+                </label>
+                {!preview ? (
+                  <label
+                    htmlFor="image"
+                    className="flex flex-col items-center justify-center h-64 rounded-xl border-2 border-dashed border-gray-300 hover:border-indigo-500 transition-colors cursor-pointer"
                   >
-                    <MdClose size={20} />
-                  </button>
-                  <img
-                    src={preview}
-                    alt="Preview"
-                    className="w-full md:w-[80%] mx-auto aspect-square object-cover rounded-md border border-gray-200"
-                  />
-                  <p className="text-sm text-gray-500 mt-1 text-center">
-                    Image Preview
-                  </p>
-                </div>
-              )}
-
-              <input
-                type="file"
-                id="image"
-                name="image"
-                onChange={handleChange}
-                className="hidden"
-                accept="image/*"
-                required
-              />
-            </div>
-
-            {/* Duration */}
-            <div>
-              <label
-                htmlFor="duration"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Duration
-              </label>
-              <input
-                type="text"
-                id="duration"
-                name="duration"
-                value={formData.duration}
-                onChange={handleChange}
-                className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2"
-                placeholder="e.g., 2 hours"
-                required
-              />
+                    <IoImageOutline className="w-16 h-16 text-gray-400 mb-4" />
+                    <p className="text-gray-600 font-medium">
+                      Click to upload image
+                    </p>
+                    <p className="text-sm text-gray-500 mt-1">
+                      PNG, JPG up to 2MB
+                    </p>
+                  </label>
+                ) : (
+                  <div className="relative group">
+                    <button
+                      type="button"
+                      onClick={handleRemoveImage}
+                      className="absolute top-4 right-4 bg-white/90 backdrop-blur rounded-full p-1.5 shadow-lg hover:bg-red-100 transition-colors"
+                    >
+                      <MdClose className="w-6 h-6 text-red-600" />
+                    </button>
+                    <img
+                      src={preview}
+                      alt="Preview"
+                      className="w-full h-64 object-cover rounded-xl border border-gray-200"
+                    />
+                  </div>
+                )}
+                <input
+                  type="file"
+                  id="image"
+                  name="image"
+                  onChange={handleChange}
+                  className="hidden"
+                  accept="image/*"
+                  required
+                />
+              </div>
             </div>
 
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-200"
+              className="w-full py-3 px-6 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             >
               Add Service
             </button>
           </form>
         </div>
       </div>
+    </div>
   );
 };
 

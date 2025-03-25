@@ -1,16 +1,24 @@
 import { useState } from "react";
 import Layout from "../components/Layout/Layout";
+import { useDispatch } from "react-redux";
+import {login} from '../Redux/authSlice'
+import { useNavigate } from "react-router-dom";
+
 export default function Login() {
-  const [formData, setFormData] = useState({ username: "", password: "" });
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const [formData, setFormData] = useState({ email: "", password: "" });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
+ 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert("Login Successful!"); // Replace with actual authentication logic
-    setFormData({ username: "", password: "" });
+    dispatch(login({ email:formData.email, password:formData.password }));
+    navigate('/admin');
+    alert("Login Successful!"); 
+    setFormData({ email: "", password: "" });
   };
 
   return (
@@ -22,10 +30,10 @@ export default function Login() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <input
               type="text"
-              name="username"
-              placeholder="Username"
+              name="email"
+              placeholder="email"
               className="w-full p-2 border rounded-md"
-              value={formData.username}
+              value={formData.email}
               onChange={handleChange}
               required
             />
