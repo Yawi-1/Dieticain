@@ -17,8 +17,9 @@ const BookingModal = ({ isOpen, onClose, service }) => {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
-      // Reset form when modal opens
       setFormData({ name: "", email: "", mode: "online" });
+      setSuccess(false);
+      setError(null);
     } else {
       document.body.style.overflow = "unset";
     }
@@ -34,16 +35,27 @@ const BookingModal = ({ isOpen, onClose, service }) => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError(null);
+
     try {
       const bookingData = {
         ...formData,
         serviceId: service._id,
         price: service.price,
+        title:service.title
       };
-      const result = await dispatch(bookService(bookingData));
+
+      const result = await dispatch(bookService(bookingData))
       console.log("Result :", result);
+
+      setSuccess(true);
+      setTimeout(() => {
+        setSuccess(false);
+        onClose(); // Close modal after success
+      }, 2000);
     } catch (error) {
       console.error("Booking failed:", error);
+      setError(error.message || "Something went wrong. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -88,9 +100,7 @@ const BookingModal = ({ isOpen, onClose, service }) => {
             </button>
           </div>
 
-          {isSubmitting && (
-            <Loader/>
-          )}
+          {isSubmitting && <Loader />}
 
           {success && (
             <div className="absolute inset-0 z-50 bg-white/80 flex items-center justify-center rounded-2xl">
@@ -112,6 +122,12 @@ const BookingModal = ({ isOpen, onClose, service }) => {
                   Booking Successful!
                 </h3>
               </div>
+            </div>
+          )}
+
+          {error && (
+            <div className="text-red-500 text-sm mb-4 bg-red-100 p-2 rounded-lg">
+              {error}
             </div>
           )}
 
@@ -160,72 +176,26 @@ const BookingModal = ({ isOpen, onClose, service }) => {
                   Consultation Mode
                 </label>
                 <div className="grid grid-cols-2 gap-3">
-                  <label
-                    className={`flex items-center p-3 border rounded-lg cursor-pointer transition-all ${
-                      formData.mode === "online"
-                        ? "border-emerald-500 bg-emerald-50"
-                        : "border-gray-200"
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      name="mode"
-                      value="online"
-                      checked={formData.mode === "online"}
-                      onChange={handleInputChange}
-                      className="sr-only"
-                    />
-                    <svg
-                      className="w-5 h-5 mr-2 text-emerald-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+                  {["online", "offline"].map((mode) => (
+                    <label
+                      key={mode}
+                      className={`flex items-center p-3 border rounded-lg cursor-pointer transition-all ${
+                        formData.mode === mode
+                          ? "border-emerald-500 bg-emerald-50"
+                          : "border-gray-200"
+                      }`}
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                      <input
+                        type="radio"
+                        name="mode"
+                        value={mode}
+                        checked={formData.mode === mode}
+                        onChange={handleInputChange}
+                        className="sr-only"
                       />
-                    </svg>
-                    <span className="text-sm">Online</span>
-                  </label>
-                  <label
-                    className={`flex items-center p-3 border rounded-lg cursor-pointer transition-all ${
-                      formData.mode === "offline"
-                        ? "border-emerald-500 bg-emerald-50"
-                        : "border-gray-200"
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      name="mode"
-                      value="offline"
-                      checked={formData.mode === "offline"}
-                      onChange={handleInputChange}
-                      className="sr-only"
-                    />
-                    <svg
-                      className="w-5 h-5 mr-2 text-emerald-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                    </svg>
-                    <span className="text-sm">In-person</span>
-                  </label>
+                      <span className="text-sm capitalize">{mode}</span>
+                    </label>
+                  ))}
                 </div>
               </div>
             </div>
@@ -235,7 +205,7 @@ const BookingModal = ({ isOpen, onClose, service }) => {
               disabled={isSubmitting}
               className="w-full py-3 px-6 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium rounded-lg hover:from-emerald-600 hover:to-teal-700 transition-all transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
             >
-              {isSubmitting ? "Processing..." : "Confirm Booking"}
+              {isSubmitting ? "Processing..." : "Checkout Now"}
             </button>
           </form>
         </div>

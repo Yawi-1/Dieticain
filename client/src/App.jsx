@@ -10,6 +10,8 @@ import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import AdminRoutes from "./components/Admin/AdminRoutes";
 import { verifyAuth } from "./Redux/authSlice";
+import Success from "./pages/Success";
+import Cancel from "./pages/Cancel";
 
 const App = () => {
   const location = useLocation();
@@ -33,6 +35,8 @@ const App = () => {
       <Route path="/blog" element={<Blog />} />
       <Route path="/login" element={<Login />} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/success" element={<Success />} />
+      <Route path="/cancel" element={<Cancel />} />
       <Route path="*" element={<Navigate to="/" replace />} />
       <Route
         path="/admin/*"

@@ -31,7 +31,7 @@ export default function Login() {
             <input
               type="text"
               name="email"
-              placeholder="email"
+              placeholder="Email"
               className="w-full p-2 border rounded-md"
               value={formData.email}
               onChange={handleChange}
