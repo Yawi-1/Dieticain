@@ -12,6 +12,7 @@ import AdminRoutes from "./components/Admin/AdminRoutes";
 import { verifyAuth } from "./Redux/authSlice";
 import Success from "./pages/Success";
 import Cancel from "./pages/Cancel";
+import  Loader from '../src/components/Modal/Loader'
 
 const App = () => {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ const App = () => {
     dispatch(verifyAuth()); 
   }, [dispatch]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Loader/>;
 
   return (
     <Routes>

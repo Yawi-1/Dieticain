@@ -8,12 +8,36 @@ export const login = createAsyncThunk(
     try {
       const response = await axios.post(
         "http://localhost:3000/api/auth/login",
-        { email, password },
-        { withCredentials: true } // Ensures cookies are sent
+        { email, password }
       );
-      return response.data.user; // Return user data
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Login failed");
+    }
+  }
+); 
+
+// Verify Email OTP
+export const verifyEmailOtp = createAsyncThunk(
+  "auth/verifyEmail",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/auth/email",
+        formData,
+        {
+          withCredentials: true,
+        }
+      );
+      console.log("Verify OTP Response", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Verify Email OTP ERROR IN AUTH SLICE REDUX", error);
+
+      // Handle server response errors
+      return rejectWithValue(
+        error.response?.data?.message || "OTP verification failed"
+      );
     }
   }
 );
@@ -59,6 +83,8 @@ const authSlice = createSlice({
     user: null,
     loading: false,
     error: null,
+    otpExpires: null,
+    isEmailSent: null,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -69,11 +95,14 @@ const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload;
+        state.otpExpires = action.payload.expiresIn;
+        state.isEmailSent = true;
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+        state.otpExpires = null;
+        state.isEmailSent = null;
       })
       .addCase(verifyAuth.pending, (state) => {
         state.loading = true;
@@ -89,7 +118,19 @@ const authSlice = createSlice({
       .addCase(logout.fulfilled, (state) => {
         state.loading = false;
         state.user = null;
-      });
+      })
+      .addCase(verifyEmailOtp.pending,(state,action)=>{
+        state.loading = true;
+      })
+      .addCase(verifyEmailOtp.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+        state.error = null
+      })
+      .addCase(verifyEmailOtp.rejected, (state,action) => {
+        state.loading = false;
+        state.error = action.payload
+      })
   },
 });
 

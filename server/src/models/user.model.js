@@ -15,6 +15,12 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    otp:{
+      type:String,
+    },
+    otp_expires:{
+      type:Date,
+    }
   },
   {
     timestamps: true,

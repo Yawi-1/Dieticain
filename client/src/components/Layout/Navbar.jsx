@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { HiMenu, HiX } from 'react-icons/hi';
+import { useLocation } from 'react-router-dom';
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,6 +15,8 @@ function Navbar() {
     { name: 'Admin', path: '/admin' },
   ];
 
+  const location = useLocation();
+
   return (
     <nav className="z-50 bg-white shadow-md sticky top-0 w-full">
       <div className="max-w-6xl mx-auto px-6">
@@ -24,7 +27,7 @@ function Navbar() {
           
           <div className="hidden md:flex items-center space-x-6">
             {navLinks.map((link) => (
-              <Link key={link.name} to={link.path} className="text-gray-600 hover:text-blue-600 transition">
+              <Link key={link.name} to={link.path} className={`${location.pathname === link.path ? 'text-blue-600 font-semibold' : 'text-gray-600'}  hover:text-blue-600 transition`}>
                 {link.name}
               </Link>
             ))}

@@ -21,7 +21,6 @@ const sendEmail = async (to, subject, text) => {
       subject,
       text,
     });
-    console.log("Email sent: ", info);
     return info;
   } catch (error) {
     console.error("Error sending email:", error);
@@ -29,19 +28,18 @@ const sendEmail = async (to, subject, text) => {
   }
 };
 
-// API Route to Send Email
-router.post('/email', async (req, res) => {
-  try {
-    const { to, subject, text } = req.body; // Get email details from request body
-    if (!to || !subject || !text) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
+// // API Route to Send Email
+// router.post('/email', async (req, res) => {
+//   try {
+//     const { to, subject, text } = req.body; // Get email details from request body
+//     if (!to || !subject || !text) {
+//       return res.status(400).json({ message: "All fields are required" });
+//     }
+//     await sendEmail(to, subject, text);
+//     res.json({ message: "Email sent successfully" });
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// });
 
-    await sendEmail(to, subject, text);
-    res.json({ message: "Email sent successfully" });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-module.exports = router;
+module.exports = sendEmail;
