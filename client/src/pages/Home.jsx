@@ -18,7 +18,6 @@ const Homepage = () => {
     // Fetch services when component mounts
     dispatch(fetchService());
     window.scrollTo(0, 0);
-    console.log("Window Rendering...");
   }, [dispatch]);
 
   useEffect(() => {
@@ -26,7 +25,6 @@ const Homepage = () => {
       // Fisher-Yates shuffle algorithm
       const shuffled = [...services].sort(() => 0.5 - Math.random());
       setFeatured(shuffled.slice(0, 3));
-      console.log("Random services selected");
     }
   }, [services]);
 

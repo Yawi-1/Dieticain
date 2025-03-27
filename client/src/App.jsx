@@ -14,17 +14,15 @@ import Success from "./pages/Success";
 import Cancel from "./pages/Cancel";
 
 const App = () => {
-  const location = useLocation();
   const dispatch = useDispatch();
   const { user, loading } = useSelector((state) => state.auth);
 
+  // To Verify User Authentication 
   useEffect(() => {
-    if ( location.pathname === '/login') {
-      dispatch(verifyAuth()); 
-    }
-  }, [location.pathname, dispatch]);
+    dispatch(verifyAuth()); 
+  }, [dispatch]);
 
-  if (loading) return <p>Loading...</p>; 
+  if (loading) return <p>Loading...</p>;
 
   return (
     <Routes>
@@ -33,15 +31,13 @@ const App = () => {
       <Route path="/services" element={<Services />} />
       <Route path="/services/:id" element={<ServiceDetail />} />
       <Route path="/blog" element={<Blog />} />
-      <Route path="/login" element={<Login />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/success" element={<Success />} />
       <Route path="/cancel" element={<Cancel />} />
+      <Route path="/login" element={user ? <Navigate to="/admin" replace /> : <Login />} />
+      <Route path="/admin/*" element={user ? <AdminRoutes /> : <Navigate to="/login" replace />} />
+
       <Route path="*" element={<Navigate to="/" replace />} />
-      <Route
-        path="/admin/*"
-        element={user ? <AdminRoutes /> : <Navigate to="/login" replace />}
-      />
     </Routes>
   );
 };

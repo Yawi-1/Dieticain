@@ -11,7 +11,7 @@ export const login = createAsyncThunk(
         { email, password },
         { withCredentials: true } // Ensures cookies are sent
       );
-      return response.data; // Return user data
+      return response.data.user; // Return user data
     } catch (error) {
       return rejectWithValue(error.response?.data || "Login failed");
     }
