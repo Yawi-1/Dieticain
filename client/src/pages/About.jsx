@@ -6,6 +6,7 @@ import cer1 from '../../public/cer1.jpg'
 import cer2 from '../../public/cer2.png'
 import cer3 from '../../public/Medal.png'
 
+
 const About = () => {
   return (
     <Layout>
@@ -115,7 +116,9 @@ const About = () => {
             </button>
           </div>
         </div>
-      </div>
+       </div> 
+     
+      
     </Layout>
   );
 };

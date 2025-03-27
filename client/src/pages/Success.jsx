@@ -16,7 +16,7 @@ const Success = () => {
             window.location.href = "/";
         }
         if (sessionId) {
-            axios.get(`http://localhost:3000/api/payment/verify-payment?session_id=${sessionId}`)
+            axios.get(`http://localhost:3001/api/payment/verify-payment?session_id=${sessionId}`)
                 .then(response => {
                     setOrder(response.data.booking);
                     setLoading(false);

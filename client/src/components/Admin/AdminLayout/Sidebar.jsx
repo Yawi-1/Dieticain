@@ -13,8 +13,8 @@ const Sidebar = ({ isOpen,setIsSidebarOpen }) => {
   const sidebarData = [
     { link: "/", icon: <MdDashboard />, text: "Dashboard" },
     { link: "/bookings", icon: <TbBrandBooking />, text: "Bookings" },
-    { link: "/add", icon: <IoIosAddCircle />, text: "Add Service" },
     { link: "/services", icon: <FaServicestack />, text: "Services" },
+    { link: "/blogs", icon: <IoIosAddCircle />, text: "Blogs" },
   ];
 
   const handleLogout  = ()=>{

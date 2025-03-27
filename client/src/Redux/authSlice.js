@@ -7,7 +7,7 @@ export const login = createAsyncThunk(
   async ({ email, password }, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/auth/login",
+        "http://localhost:3001/api/auth/login",
         { email, password }
       );
       return response.data;
@@ -23,7 +23,7 @@ export const verifyEmailOtp = createAsyncThunk(
   async (formData, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/auth/email",
+        "http://localhost:3001/api/auth/email",
         formData,
         {
           withCredentials: true,
@@ -48,7 +48,7 @@ export const verifyAuth = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        "http://localhost:3000/api/auth/verify",
+        "http://localhost:3001/api/auth/verify",
         {
           withCredentials: true,
         }
@@ -66,7 +66,7 @@ export const logout = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       await axios.post(
-        "http://localhost:3000/api/auth/logout",
+        "http://localhost:3001/api/auth/logout",
         {},
         { withCredentials: true }
       );

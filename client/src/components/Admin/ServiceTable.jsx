@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
+import { FaEdit, FaTrash, FaEye, FaPlus } from "react-icons/fa";
+import ServiceFormModal from "./ServiceFormModal";
 
-const Services = () => {
+const ServiceTable = () => {
   const [search, setSearch] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [services, setServices] = useState([
     {
       id: 1,
@@ -35,8 +37,8 @@ const Services = () => {
     <div className="p-6">
       <h2 className="text-3xl font-bold mb-6 text-gray-800">💼 Services</h2>
 
-      {/* Search Bar */}
-      <div className="relative mb-6">
+      {/* Search and Add Service */}
+      <div className="flex justify-between items-center mb-6">
         <input
           type="text"
           placeholder="🔍 Search service..."
@@ -44,6 +46,12 @@ const Services = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
+        <button
+          className="flex items-center gap-2 px-4 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+          onClick={() => setIsModalOpen(true)}
+        >
+          <FaPlus /> Add Service
+        </button>
       </div>
 
       {/* Responsive Table */}
@@ -96,8 +104,10 @@ const Services = () => {
           </tbody>
         </table>
       </div>
+      
+      <ServiceFormModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
 };
 
-export default Services;
+export default ServiceTable;
