@@ -83,7 +83,7 @@ export default function Contact() {
         <div className="max-w-3xl mx-auto mt-6">
           <iframe
             className="w-full h-64 rounded-md shadow-md"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.8354345093686!2d144.95373631531695!3d-37.81627974202125!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d5df1f7f579%3A0x4e6b062ed5f8c825!2sMelbourne%20CBD!5e0!3m2!1sen!2sau!4v1632380123456!5m2!1sen!2sau"
+           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3424.231081745668!2d75.84796007504347!3d30.880195978491937!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391a825313ade647%3A0x8221aeeb0002f9ba!2sANSH%20InfoTech!5e0!3m2!1sen!2sin!4v1743143450741!5m2!1sen!2sin"
             allowFullScreen=""
             loading="lazy"
           ></iframe>

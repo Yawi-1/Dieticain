@@ -31,18 +31,31 @@ const ServiceFormModal = ({isOpen,onClose}) => {
     setFormData({ ...formData, image: "" });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formDataToSend = new FormData();
     Object.entries(formData).forEach(([key, value]) => {
       formDataToSend.append(key, value);
     });
-    dispatch(addService(formDataToSend));
+    const res = await dispatch(addService(formDataToSend));
+    if(res.type === 'service/addService/fulfilled'){
+      onClose();
+      setFormData({
+        title: "",
+        description: "",
+        price: "",
+        image: "",
+        duration: "",
+      });
+      alert('Service added suceesfully..')
+    }else{
+      alert('Error while adding service..! Please try again later...')
+    }
   };
 
    if(!isOpen) return null;
   return (
-    <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 bg-black/50 bg-opacity-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div className="p-6 md:p-8">
           <div className="flex justify-between items-center mb-6">

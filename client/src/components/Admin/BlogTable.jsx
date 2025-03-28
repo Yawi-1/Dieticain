@@ -1,30 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaEdit, FaTrash, FaEye, FaPlus } from "react-icons/fa";
 import BlogFormModal from '../Modal/BlogModalForm'
+import {useDispatch,useSelector} from 'react-redux'
+import { fetchBlogs } from "../../Redux/blogSlice";
+import Loader from '../Modal/Loader'
 
 const BlogTable = () => {
   const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [blogs, setBlogs] = useState([
-    {
-      id: 1,
-      title: "5 Quick Mediterranean Diet Meals",
-      category: "Healthy Recipes",
-      content: "Discover delicious and nutritious meals...",
-      image: "https://via.placeholder.com/600x400",
-    },
-    {
-      id: 2,
-      title: "Wellness Tips for a Balanced Life",
-      category: "Wellness",
-      content: "Simple daily habits to improve well-being...",
-      image: "https://via.placeholder.com/600x400",
-    },
-  ]);
+  const dispatch = useDispatch();
+  const {blogs,status} = useSelector(state=>state.blog)
 
   const filteredBlogs = blogs.filter((blog) =>
     blog.title.toLowerCase().includes(search.toLowerCase())
   );
+  useEffect(()=>{
+    dispatch(fetchBlogs());
+  },[])
 
   return (
     <div className="p-6">
@@ -54,6 +46,7 @@ const BlogTable = () => {
             <tr className="bg-gradient-to-r from-blue-500 to-purple-500 text-white">
               <th className="p-4 text-left">Title</th>
               <th className="p-4 text-left">Category</th>
+              <th className="p-4 text-left">Description</th>
               <th className="p-4 text-left">Actions</th>
             </tr>
           </thead>
@@ -67,6 +60,7 @@ const BlogTable = () => {
               >
                 <td className="p-4">{blog.title}</td>
                 <td className="p-4">{blog.category}</td>
+                <td className="p-4">{blog.content.slice(0,50)} ...</td>
                 <td className="p-4 flex gap-2">
                   <button className="p-2 rounded-lg text-blue-500 hover:text-white hover:bg-blue-500 transition">
                     <FaEye />
@@ -85,6 +79,7 @@ const BlogTable = () => {
       </div>
       
       <BlogFormModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+        {status === 'loading' && <Loader/>}
     </div>
   );
 };

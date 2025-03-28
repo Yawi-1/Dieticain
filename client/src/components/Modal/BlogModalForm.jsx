@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { IoImageOutline } from "react-icons/io5";
 import { MdClose } from "react-icons/md";
+import { addBlog } from "../../Redux/blogSlice";
+import { useDispatch, useSelector } from "react-redux";
 
-const BlogFormModal = ({isOpen,onClose}) => {
+const BlogFormModal = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({
     title: "",
     category: "",
@@ -10,6 +12,7 @@ const BlogFormModal = ({isOpen,onClose}) => {
     image: "",
   });
   const [preview, setPreview] = useState("");
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     const { name, type, value, files } = e.target;
@@ -27,22 +30,44 @@ const BlogFormModal = ({isOpen,onClose}) => {
     setFormData({ ...formData, image: "" });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log(formData);
+    const formDataToSend = new FormData();
+    Object.entries(formData).forEach(([key, value]) => {
+      formDataToSend.append(key, value);
+    });
+
+    const res = await dispatch(addBlog(formDataToSend));
+    console.log(res);
+    if (res.type === 'blog/addBlog/fulfilled') {
+      setFormData({
+        title: "",
+        category: "",
+        content: "",
+        image: "",
+      });
+      setPreview('')
+      onClose();
+      alert("Blog Added Successfully");
+    }else{
+      alert("Something went wrong !! Please try again later ..");
+    }
   };
 
-  if(!isOpen) return null;
-
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 bg-opacity-50 flex items-center justify-center p-2">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div className="p-4 md:p-6">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-800">Add New Blog Post</h2>
-            <button onClick={onClose} className="text-gray-500 hover:text-gray-700 transition-colors">
+            <h2 className="text-2xl font-bold text-gray-800">
+              Add New Blog Post
+            </h2>
+            <button
+              onClick={onClose}
+              className="text-gray-500 hover:text-gray-700 transition-colors"
+            >
               <MdClose className="w-6 h-6" />
             </button>
           </div>

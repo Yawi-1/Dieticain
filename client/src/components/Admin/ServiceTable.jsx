@@ -1,37 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaEdit, FaTrash, FaEye, FaPlus } from "react-icons/fa";
 import ServiceFormModal from "./ServiceFormModal";
+import { useSelector,useDispatch } from "react-redux";
+import { fetchService } from "../../Redux/serviceSlice";
+import Loader from '../../components/Modal/Loader'
 
 const ServiceTable = () => {
   const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [services, setServices] = useState([
-    {
-      id: 1,
-      name: "Weight Loss Program",
-      price: "$150",
-      duration: "3 Months",
-      status: "Active",
-    },
-    {
-      id: 2,
-      name: "Muscle Gain Plan",
-      price: "$200",
-      duration: "4 Months",
-      status: "Inactive",
-    },
-    {
-      id: 3,
-      name: "Personalized Diet Plan",
-      price: "$100",
-      duration: "1 Month",
-      status: "Active",
-    },
-  ]);
+  const dispatch = useDispatch();
+  const {services,status} = useSelector(state=>state.service);
+
 
   const filteredServices = services.filter((service) =>
-    service.name.toLowerCase().includes(search.toLowerCase())
+    service.title.toLowerCase().includes(search.toLowerCase())
   );
+
+  useEffect(()=>{
+    dispatch(fetchService())
+  },[])
 
   return (
     <div className="p-6">
@@ -62,32 +49,22 @@ const ServiceTable = () => {
               <th className="p-4 text-left">Service Name</th>
               <th className="p-4 text-left">Price</th>
               <th className="p-4 text-left">Duration</th>
-              <th className="p-4 text-left">Status</th>
+              {/* <th className="p-4 text-left">Status</th> */}
               <th className="p-4 text-left">Actions</th>
             </tr>
           </thead>
           <tbody>
             {filteredServices.map((service, index) => (
               <tr
-                key={service.id}
+                key={service._id}
                 className={`${
                   index % 2 === 0 ? "bg-gray-50" : "bg-white"
                 } hover:bg-gray-100 transition`}
               >
-                <td className="p-4">{service.name}</td>
+                <td className="p-4">{service.title}</td>
                 <td className="p-4">{service.price}</td>
                 <td className="p-4">{service.duration}</td>
-                <td className="p-4">
-                  <span
-                    className={`px-3 py-1 text-sm font-semibold rounded-full ${
-                      service.status === "Active"
-                        ? "bg-green-100 text-green-700"
-                        : "bg-red-100 text-red-700"
-                    }`}
-                  >
-                    {service.status}
-                  </span>
-                </td>
+               
                 <td className="p-4 flex gap-2">
                   <button className="p-2 rounded-lg text-blue-500 hover:text-white hover:bg-blue-500 transition">
                     <FaEye />
@@ -106,6 +83,7 @@ const ServiceTable = () => {
       </div>
       
       <ServiceFormModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+        {status ==='loading' && <Loader/>}
     </div>
   );
 };

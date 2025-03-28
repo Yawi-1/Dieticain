@@ -21,6 +21,7 @@ export const addBlog = createAsyncThunk(
   async (formData, { rejectWithValue }) => {
     try {
       const response = await axios.post(`${API_URL}/api/blog`, formData);
+      console.log(response.data)
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);

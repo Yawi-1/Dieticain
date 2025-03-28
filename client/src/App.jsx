@@ -36,7 +36,8 @@ const App = () => {
       <Route path="/success" element={<Success />} />
       <Route path="/cancel" element={<Cancel />} />
       <Route path="/login" element={user ? <Navigate to="/admin" replace /> : <Login />} />
-      <Route path="/admin/*" element={user ? <AdminRoutes /> : <Navigate to="/login" replace />} />
+      <Route path="/admin/*" element={ <AdminRoutes /> } />
+      {/* <Route path="/admin/*" element={user ? <AdminRoutes /> : <Navigate to="/login" replace />} /> */}
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
