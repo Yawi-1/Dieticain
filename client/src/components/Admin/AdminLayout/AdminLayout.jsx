@@ -9,7 +9,7 @@ const AdminLayout = ({ children }) => {
   };
 
   return (
-    <div className="flex h-screen w-full bg-gray-100">
+    <div className="flex h-screen w-full ">
       {/* Sidebar */}
       <Sidebar isOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} toggleSidebar={toggleSidebar} />
 

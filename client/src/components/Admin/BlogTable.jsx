@@ -1,26 +1,42 @@
 import { useEffect, useState } from "react";
 import { FaEdit, FaTrash, FaEye, FaPlus } from "react-icons/fa";
-import BlogFormModal from '../Modal/BlogModalForm'
-import {useDispatch,useSelector} from 'react-redux'
+import BlogFormModal from "../Modal/BlogModalForm";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchBlogs } from "../../Redux/blogSlice";
-import Loader from '../Modal/Loader'
+import Loader from "../Modal/Loader";
+import DeleteModal from "../Modal/DeleteModal";
+import { deleteBlog } from "../../Redux/blogSlice";
 
 const BlogTable = () => {
   const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
-  const {blogs,status} = useSelector(state=>state.blog)
+  const { blogs, status } = useSelector((state) => state.blog);
+  const [isDelete, setDelete] = useState(false);
 
   const filteredBlogs = blogs.filter((blog) =>
     blog.title.toLowerCase().includes(search.toLowerCase())
   );
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(fetchBlogs());
-  },[])
+  }, []);
+
+  const handleDelete = async () => {
+    const res = await dispatch(deleteBlog(isDelete));
+    if (res.type === "blog/delete/fulfilled") {
+      setDelete(false);
+      alert("Service deleted successfully");
+      onClose();
+    } else {
+      alert("Please try again later ...?");
+    }
+  };
 
   return (
     <div className="p-6">
-      <h2 className="text-3xl font-bold mb-6 text-gray-800">📝 Blog Articles</h2>
+      <h2 className="text-3xl font-bold mb-6 text-gray-800">
+        📝 Blog Articles
+      </h2>
 
       {/* Search and Add Blog */}
       <div className="flex justify-between items-center mb-6">
@@ -60,15 +76,12 @@ const BlogTable = () => {
               >
                 <td className="p-4">{blog.title}</td>
                 <td className="p-4">{blog.category}</td>
-                <td className="p-4">{blog.content.slice(0,50)} ...</td>
+                <td className="p-4">{blog.content.slice(0, 50)} ... </td>
                 <td className="p-4 flex gap-2">
-                  <button className="p-2 rounded-lg text-blue-500 hover:text-white hover:bg-blue-500 transition">
-                    <FaEye />
-                  </button>
-                  <button className="p-2 rounded-lg text-yellow-500 hover:text-white hover:bg-yellow-500 transition">
-                    <FaEdit />
-                  </button>
-                  <button className="p-2 rounded-lg text-red-500 hover:text-white hover:bg-red-500 transition">
+                  <button
+                    onClick={() => setDelete(blog._id)}
+                    className="p-2 rounded-lg text-red-500 hover:text-white hover:bg-red-500 transition"
+                  >
                     <FaTrash />
                   </button>
                 </td>
@@ -77,9 +90,17 @@ const BlogTable = () => {
           </tbody>
         </table>
       </div>
-      
-      <BlogFormModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-        {status === 'loading' && <Loader/>}
+
+      <BlogFormModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+      {status === "loading" && <Loader />}
+      <DeleteModal
+        isOpen={isDelete}
+        onClose={() => setDelete(false)}
+        handleDelete={handleDelete}
+      />
     </div>
   );
 };

@@ -29,7 +29,6 @@ export const verifyEmailOtp = createAsyncThunk(
           withCredentials: true,
         }
       );
-      console.log("Verify OTP Response", response.data);
       return response.data;
     } catch (error) {
       console.error("Verify Email OTP ERROR IN AUTH SLICE REDUX", error);

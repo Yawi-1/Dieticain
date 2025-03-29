@@ -2,7 +2,7 @@ import React from 'react'
 
 const Loader = () => {
   return (
-    <div className="fixed z-50 inset-0 bg-white/80 flex items-center justify-center rounded-2xl">
+    <div className="fixed z-100 inset-0 bg-white/80 flex items-center justify-center rounded-2xl">
     <div className="flex flex-col items-center gap-4">
       {/* Gradient spinner */}
       <div className="relative w-12 h-12">

@@ -36,6 +36,18 @@ export const bookService = createAsyncThunk("service/bookService", async (data, 
   }
 });
 
+// Dleete a service
+
+export const deleteService = createAsyncThunk('service/delete',async(id,{ rejectWithValue })=>{
+  try {
+    const response = await axios.delete(`${API_URL}/api/service/${id}`);
+    console.log(response.data.data)
+    return response.data.data;
+  } catch (error) {
+    return rejectWithValue(error.response?.data || error.message);
+  }
+})
+
 const serviceSlice = createSlice({
   name: "services",
   initialState: { services: [], status: "idle", error: null },
@@ -55,8 +67,19 @@ const serviceSlice = createSlice({
         state.services.push(action.payload);
       })
       .addCase(bookService.fulfilled, (_, action) => {
-        window.location.href = action.payload; // Redirect to Stripe checkout
-      });
+        window.location.href = action.payload; 
+      })
+      .addCase(deleteService.pending,(state,action)=>{
+        state.status="loading"
+      })
+      .addCase(deleteService.fulfilled,(state,action)=>{
+        state.status="success"
+        state.services = state.services.filter((service)=> service._id !== action.payload._id)
+      })
+      .addCase(deleteService.rejected,(state,action)=>{
+        state.status="failed"
+        state.error = action.payload.error || 'Something went wrong...'
+      })
   },
 });
 

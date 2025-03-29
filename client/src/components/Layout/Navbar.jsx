@@ -21,7 +21,7 @@ function Navbar() {
     <nav className="z-50 bg-white shadow-md sticky top-0 w-full">
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex justify-between items-center h-16">
-          <Link to="/" className="text-2xl font-bold text-blue-600">
+          <Link to="/" className="text-2xl shadow px-4 py-2 rounded font-bold text-blue-600">
             NutriCare
           </Link>
           
@@ -53,7 +53,7 @@ function Navbar() {
             </Link>
           </div>
         )}
-      </div>
+      </div> 
     </nav>
   );
 }

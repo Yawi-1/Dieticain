@@ -13,6 +13,7 @@ import { verifyAuth } from "./Redux/authSlice";
 import Success from "./pages/Success";
 import Cancel from "./pages/Cancel";
 import  Loader from '../src/components/Modal/Loader'
+import BlogDetail from "./pages/BlogDetail";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -32,12 +33,13 @@ const App = () => {
       <Route path="/services" element={<Services />} />
       <Route path="/services/:id" element={<ServiceDetail />} />
       <Route path="/blog" element={<Blog />} />
+      <Route path="/blog/:id" element={<BlogDetail />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/success" element={<Success />} />
       <Route path="/cancel" element={<Cancel />} />
       <Route path="/login" element={user ? <Navigate to="/admin" replace /> : <Login />} />
-      <Route path="/admin/*" element={ <AdminRoutes /> } />
-      {/* <Route path="/admin/*" element={user ? <AdminRoutes /> : <Navigate to="/login" replace />} /> */}
+      {/* <Route path="/admin/*" element={ <AdminRoutes /> } /> */}
+      <Route path="/admin/*" element={user ? <AdminRoutes /> : <Navigate to="/login" replace />} />
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

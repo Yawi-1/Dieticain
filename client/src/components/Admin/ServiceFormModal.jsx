@@ -3,8 +3,10 @@ import { IoImageOutline } from "react-icons/io5";
 import { MdClose } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { addService } from "../../Redux/serviceSlice";
+import { useSelector } from "react-redux";
+import Loader from "../Modal/Loader";
 
-const ServiceFormModal = ({isOpen,onClose}) => {
+const ServiceFormModal = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -14,6 +16,7 @@ const ServiceFormModal = ({isOpen,onClose}) => {
   });
   const [preview, setPreview] = useState("");
   const dispatch = useDispatch();
+  const { status } = useSelector((state) => state.service);
 
   const handleChange = (e) => {
     const { name, type, value, files } = e.target;
@@ -38,7 +41,8 @@ const ServiceFormModal = ({isOpen,onClose}) => {
       formDataToSend.append(key, value);
     });
     const res = await dispatch(addService(formDataToSend));
-    if(res.type === 'service/addService/fulfilled'){
+    console.log('res', res)
+    if (res.type === "service/addService/fulfilled") {
       onClose();
       setFormData({
         title: "",
@@ -47,22 +51,25 @@ const ServiceFormModal = ({isOpen,onClose}) => {
         image: "",
         duration: "",
       });
-      alert('Service added suceesfully..')
-    }else{
-      alert('Error while adding service..! Please try again later...')
+      alert("Service added suceesfully..");
+    } else {
+      alert("Error while adding service..! Please try again later...");
     }
   };
 
-   if(!isOpen) return null;
+  if (!isOpen) return null;
   return (
     <div className="fixed inset-0 z-50 bg-black/50 bg-opacity-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div className="p-6 md:p-8">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-800">Add New Service</h2>
+            <h2 className="text-2xl font-bold text-gray-800">
+              Add New Service
+            </h2>
             <button
               className="text-gray-500 hover:text-gray-700 transition-colors"
               onClick={onClose}
+              disabled={status == "pending"}
             >
               <MdClose className="w-6 h-6" />
             </button>
@@ -77,6 +84,7 @@ const ServiceFormModal = ({isOpen,onClose}) => {
                 <input
                   type="text"
                   name="title"
+                  disabled={status == "pending"}
                   value={formData.title}
                   onChange={handleChange}
                   className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
@@ -93,6 +101,7 @@ const ServiceFormModal = ({isOpen,onClose}) => {
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
+                  disabled={status == "pending"}
                   rows="3"
                   className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                   placeholder="Enter service description"
@@ -109,6 +118,7 @@ const ServiceFormModal = ({isOpen,onClose}) => {
                   name="price"
                   value={formData.price}
                   onChange={handleChange}
+                  disabled={status == "pending"}
                   className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                   placeholder="0.00"
                   required
@@ -124,6 +134,7 @@ const ServiceFormModal = ({isOpen,onClose}) => {
                   name="duration"
                   value={formData.duration}
                   onChange={handleChange}
+                  disabled={status=='pending'}
                   className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                   placeholder="e.g., 2 hours"
                   required
@@ -172,6 +183,7 @@ const ServiceFormModal = ({isOpen,onClose}) => {
                   onChange={handleChange}
                   className="hidden"
                   accept="image/*"
+                  disabled={status=='pending'}
                   required
                 />
               </div>
@@ -181,11 +193,12 @@ const ServiceFormModal = ({isOpen,onClose}) => {
               type="submit"
               className="w-full py-3 px-6 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             >
-              Add Service
+              {status === "pending" ? <div className="flex items-center justify-center gap-x-4">Adding <div className="w-6 h-6 rounded-full border-2 border-dashed animate-spin"></div></div> : "Add Service"} 
             </button>
           </form>
         </div>
       </div>
+      {status === "pending" && <Loader />}
     </div>
   );
 };

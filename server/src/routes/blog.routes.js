@@ -13,6 +13,6 @@ const router = Router();
 router.post("/", uploadSingleImage, addBlog);
 router.get("/", getAllBlogs);
 router.get("/:id", getBlogById);
-router.delete("/:id", authenticate, deleteBlog);
+router.delete("/:id", deleteBlog);
 
 module.exports = router;

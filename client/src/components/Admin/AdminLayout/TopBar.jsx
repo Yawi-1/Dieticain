@@ -1,5 +1,6 @@
 import React from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const TopBar = ({toggleSidebar }) => {
   return (
@@ -13,13 +14,9 @@ const TopBar = ({toggleSidebar }) => {
       >
         <FaBars size={24} />
       </button>
-
-      {/* Title */}
-      <h1 className="text-xl font-bold text-blue-600">Nutri Care</h1>
+      <Link to='/' className="text-xl font-bold text-blue-600">Nutri Care</Link>
       </div>
-    
 
-      {/* Placeholder for future content */}
       <div className="w-8"></div>
     </div>
   );
