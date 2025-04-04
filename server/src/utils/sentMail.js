@@ -7,8 +7,8 @@ const router = express.Router();
 const transporter = nodemailer.createTransport({
     service:'gmail',
   auth: {
-    user: 'atulranjan164@gmail.com', 
-    pass: 'sugl mlbg cvtv qyss', 
+    user: 'yawimalik786@gmail.com', 
+    pass: 'zsow jrsm ajju ettb', 
   },
 });
 
@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
 const sendEmail = async (to, subject, text) => {
   try {
     const info = await transporter.sendMail({
-      from: `atulranjan164@gmail.com`,
+      from: `yawimalik786@gmail.com`,
       to,
       subject,
       text,

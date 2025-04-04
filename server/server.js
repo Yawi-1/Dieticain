@@ -10,7 +10,7 @@ const blogRouter = require('./src/routes/blog.routes.js')
 const bookingRouter = require('./src/routes/booking.routes.js')
 
 let corsOptions = {
-  origin: ["http://localhost:5173","http://localhost:5174","http://192.168.31.233:5173"],
+  origin: ["http://localhost:5173","http://localhost:5174","http://192.168.29.249:5173"],
   methods: "GET,POST,PUT,DELETE",
   credentials: true,
 };

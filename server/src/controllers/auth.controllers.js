@@ -42,7 +42,6 @@ const signup = async (req, res) => {
   }
 };
 
-// Login function
 
 
 
@@ -55,44 +54,7 @@ const login = async (req, res) => {
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ message: "Invalid Password" });
-
-    // Generate and save OTP
-    const otp = Math.floor(1000 + Math.random() * 9000);
-    user.otp = otp;
-    user.otp_expires = Date.now() + 10 * 60 * 1000; // 10 minutes
-    await user.save();
-
-    // Send OTP via email
-    await sendMail(email, "Your Login OTP", `Your OTP is: ${otp}`);
     
-    res.status(200).json({ 
-      message: "OTP sent to email", 
-      email,
-      expiresIn: 600 // 10 minutes in seconds
-    });
-
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
-
-const verifyOTP = async (req, res) => {
-  console.log('User OTp ',req.body)
-  try {
-    const { email, otp } = req.body;
-    const user = await User.findOne({ email });
-    
-    if (!user) return res.status(400).json({ message: "User not found" });
-    if (parseInt(user.otp) !== parseInt(otp) || user.otp_expires <= Date.now()) {
-      return res.status(400).json({ message: "Invalid  OTP" });
-    }
-
-    // Clear OTP after successful verification
-    user.otp = undefined;
-    user.otp_expires = undefined;
-    await user.save();
-
     // Generate token
     const token = generateToken(user._id);
     res.cookie("authToken", token, {
@@ -114,8 +76,6 @@ const verifyOTP = async (req, res) => {
 };
 
 
-
-//  verify Authentication function
 const verify = async (req, res) => {
   try {
     const token = req.cookies.authToken; // ✅ Read token from cookies
@@ -137,4 +97,4 @@ const logout = async (req, res) => {
   res.json({ message: "Logged out" });
 };
 
-module.exports = { signup, login, verify, logout,verifyOTP };
+module.exports = { signup, login, verify, logout, };
