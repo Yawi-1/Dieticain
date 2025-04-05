@@ -18,8 +18,7 @@ const app = express();
 let corsOptions = {
   origin: [
     "http://localhost:5173",
-    "http://localhost:5174",
-    "http://192.168.29.249:5173"
+    "https://nutricare11.netlify.app/",
   ],
   methods: "GET,POST,PUT,DELETE",
   credentials: true,
@@ -63,6 +62,6 @@ app.get("/", (req, res) => {
 });
 // Start server
 server.listen(3001, () => {
-  console.log("🚀 Server running on http://localhost:3001");
+  console.log("🚀 Server running on https://dieticain.onrender.com");
   dbConnection();
 });

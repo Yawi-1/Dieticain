@@ -21,7 +21,7 @@ const Success = () => {
             navigate("/");
         }
         if (sessionId) {
-            axios.get(`http://localhost:3001/api/payment/verify-payment?session_id=${sessionId}`)
+            axios.get(`https://dieticain.onrender.com/api/payment/verify-payment?session_id=${sessionId}`)
                 .then(response => {
                     setOrder(response.data.booking);
                     setLoading(false);
