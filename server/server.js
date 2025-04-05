@@ -18,7 +18,7 @@ const app = express();
 let corsOptions = {
   origin: [
     "http://localhost:5173",
-    "https://nutricare11.netlify.app/",
+    "https://nutricare11.netlify.app",
   ],
   methods: "GET,POST,PUT,DELETE",
   credentials: true,
