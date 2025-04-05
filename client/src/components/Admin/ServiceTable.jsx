@@ -37,7 +37,7 @@ const ServiceTable = () => {
   }
 
   return (
-    <div className="p-4 md:p-6 w-full">
+    <div className="p-2 md:p-6  w-96  md:w-full">
       <h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6 text-gray-800">
         💼 Services
       </h2>

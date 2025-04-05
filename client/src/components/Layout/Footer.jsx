@@ -3,7 +3,7 @@ import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
 
 function Footer() {
   return (
-    <footer className="bg-gray-900 text-white py-12">
+    <footer className="bg-gray-900 text-white px-12 pt-12">
       <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div>
           <h3 className="text-xl font-bold">NutriCare</h3>
@@ -37,7 +37,7 @@ function Footer() {
           <p className="text-gray-400 mt-2">123 Nutrition Street, Ludhiana City, IND 141002</p>
           <p className="text-gray-400">Phone: (+91)123-456-7890</p>
           <p className="text-gray-400">Email: contact@nutricare.com</p>
-          <div className="flex space-x-4 mt-4">
+          <div className="flex space-x-4 my-4">
             <a href="#" className="text-gray-400 hover:text-white"><FaFacebook size={20} /></a>
             <a href="#" className="text-gray-400 hover:text-white"><FaTwitter size={20} /></a>
             <a href="#" className="text-gray-400 hover:text-white"><FaInstagram size={20} /></a>
@@ -45,7 +45,7 @@ function Footer() {
           </div>
         </div>
       </div>
-      <div>Created </div>
+      <div className='font-bold text-gray-400 text-xs text-center p-4 '>Created with ❤️ by Yawi </div>
     </footer>
   );
 }
