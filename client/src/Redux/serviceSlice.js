@@ -41,7 +41,6 @@ export const bookService = createAsyncThunk("service/bookService", async (data, 
 export const deleteService = createAsyncThunk('service/delete',async(id,{ rejectWithValue })=>{
   try {
     const response = await axios.delete(`${API_URL}/api/service/${id}`);
-    console.log(response.data.data)
     return response.data.data;
   } catch (error) {
     return rejectWithValue(error.response?.data || error.message);
@@ -51,7 +50,11 @@ export const deleteService = createAsyncThunk('service/delete',async(id,{ reject
 const serviceSlice = createSlice({
   name: "services",
   initialState: { services: [], status: "idle", error: null },
-  reducers: {},
+  reducers: {
+    addServiceFromSocket: (state, action) => {
+      state.services.unshift(action.payload);
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchService.pending, (state) => { state.status = "loading"; })
@@ -82,5 +85,5 @@ const serviceSlice = createSlice({
       })
   },
 });
-
+export const { addServiceFromSocket } = serviceSlice.actions;
 export default serviceSlice.reducer;

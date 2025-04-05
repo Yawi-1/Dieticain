@@ -3,7 +3,7 @@ import Layout from "../components/Layout/Layout";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../Redux/authSlice";
 import { useNavigate } from "react-router-dom";
-
+import { toast } from "react-toastify";
 export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ export default function Login() {
 
     console.log("Dispatch Response", res);
     if (res.type === "auth/login/fulfilled") {
-      alert(`${res?.payload?.message} on ${formData.email}`);
+      toast(`${res?.payload?.message} on ${formData.email}`);
       navigate("/admin");
     }
   };

@@ -42,6 +42,7 @@ body {
 
   .main-text{
     animation: textEffect 1s linear;
+    
     transition: all;
   }
 
@@ -53,5 +54,19 @@ body {
     to{
       transform: scale(1);
       opacity: 1;
+    }
+  }
+  .slide {
+    animation: appear linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
+  }
+  @keyframes appear {
+    from{
+      transform: scale(0.6);
+    }
+    to{
+      transform: scale(1);
+      
     }
   }

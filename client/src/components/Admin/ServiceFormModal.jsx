@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { addService } from "../../Redux/serviceSlice";
 import { useSelector } from "react-redux";
 import Loader from "../Modal/Loader";
-
+import {toast} from 'react-toastify'
 const ServiceFormModal = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({
     title: "",
@@ -31,7 +31,7 @@ const ServiceFormModal = ({ isOpen, onClose }) => {
 
   const handleRemoveImage = () => {
     setPreview("");
-    setFormData({ ...formData, image: "" });
+    setFormData({ image: "" });
   };
 
   const handleSubmit = async (e) => {
@@ -41,7 +41,6 @@ const ServiceFormModal = ({ isOpen, onClose }) => {
       formDataToSend.append(key, value);
     });
     const res = await dispatch(addService(formDataToSend));
-    console.log('res', res)
     if (res.type === "service/addService/fulfilled") {
       onClose();
       setFormData({
@@ -51,15 +50,15 @@ const ServiceFormModal = ({ isOpen, onClose }) => {
         image: "",
         duration: "",
       });
-      alert("Service added suceesfully..");
+      toast("Service added suceesfully..");
     } else {
-      alert("Error while adding service..! Please try again later...");
+      toast("Error while adding service..! Please try again later...");
     }
   };
 
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 bg-opacity-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-10 bg-black/50 bg-opacity-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div className="p-6 md:p-8">
           <div className="flex justify-between items-center mb-6">

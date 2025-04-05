@@ -30,10 +30,12 @@ const addService = async (req, res) => {
       duration,
       image: imageUrl || file?.path,
     });
+     // Emit real-time update to all clients
+     global.io.emit('new-service', service);
+
     res
       .status(201)
       .json({ message: "Products Added Successfully ... ", data: service });
-    console.log(service);
   } catch (error) {
     console.log(error);
     res.status(400).json({ message: error.message });

@@ -7,6 +7,7 @@ import { TbBrandBooking } from "react-icons/tb";
 import { IoLogOut } from "react-icons/io5";
 import {useDispatch} from 'react-redux'
 import {logout} from '../../../Redux/authSlice'
+import {toast} from 'react-toastify'
 
 const Sidebar = ({ isOpen,setIsSidebarOpen }) => {
   const dispatch = useDispatch();
@@ -19,7 +20,7 @@ const Sidebar = ({ isOpen,setIsSidebarOpen }) => {
 
   const handleLogout  = ()=>{
     dispatch(logout());
-    alert('Logout Successfully...')
+    toast('Logout Successfully...')
   }
 
   return (

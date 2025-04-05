@@ -5,6 +5,7 @@ import FAQAccordion from './FAQAccordion ';
 import BookingModal from '../Modal/BookingModal'
 import { useSelector,useDispatch } from 'react-redux';
 import { fetchService } from '../../Redux/serviceSlice';
+import { toast } from 'react-toastify';
  
 const ServiceDetail = () => {
   const { id } = useParams();
@@ -36,7 +37,7 @@ const ServiceDetail = () => {
 
 
   const handleSubmit = ()=>{
-    alert('Success')
+    toast('Success')
   }
 
   return (

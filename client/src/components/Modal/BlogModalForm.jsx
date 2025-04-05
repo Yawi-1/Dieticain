@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { IoImageOutline } from "react-icons/io5";
 import { MdClose } from "react-icons/md";
 import { addBlog } from "../../Redux/blogSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import {toast} from 'react-toastify'
 
 const BlogFormModal = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({
@@ -48,9 +49,9 @@ const BlogFormModal = ({ isOpen, onClose }) => {
       });
       setPreview('')
       onClose();
-      alert("Blog Added Successfully");
+      toast("Blog Added Successfully");
     }else{
-      alert("Something went wrong !! Please try again later ..");
+      toast("Something went wrong !! Please try again later ..");
     }
   };
 

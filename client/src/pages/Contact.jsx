@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Layout from "../components/Layout/Layout";
-
+import { toast } from "react-toastify";
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: "",
@@ -15,7 +15,7 @@ export default function Contact() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert("Message Sent Successfully!");
+    toast("Message Sent Successfully!");
     setFormData({ name: "", email: "", subject: "", message: "" });
   };
 

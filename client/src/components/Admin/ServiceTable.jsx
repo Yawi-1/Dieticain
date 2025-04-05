@@ -6,6 +6,7 @@ import ServiceFormModal from "./ServiceFormModal";
 import Loader from "../../components/Modal/Loader";
 import DeleteModal from "../Modal/DeleteModal";
 import { deleteService } from "../../Redux/serviceSlice";
+import {toast} from 'react-toastify'
 
 const ServiceTable = () => {
   const [search, setSearch] = useState("");
@@ -27,11 +28,11 @@ const ServiceTable = () => {
     const res = await dispatch(deleteService(isDelete));
     if(res.type === 'service/delete/fulfilled'){
       setDelete(false);
-      alert('Service deleted successfully');
+      toast('Service deleted successfully');
       onClose();
     }
     else{
-      alert('Please try again later ...?');
+      toast('Please try again later ...?');
     }
   }
 

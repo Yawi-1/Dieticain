@@ -6,7 +6,7 @@ import { fetchBlogs } from "../../Redux/blogSlice";
 import Loader from "../Modal/Loader";
 import DeleteModal from "../Modal/DeleteModal";
 import { deleteBlog } from "../../Redux/blogSlice";
-
+import {toast} from 'react-toastify'
 const BlogTable = () => {
   const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -25,10 +25,10 @@ const BlogTable = () => {
     const res = await dispatch(deleteBlog(isDelete));
     if (res.type === "blog/delete/fulfilled") {
       setDelete(false);
-      alert("Service deleted successfully");
+      toast("Service deleted successfully");
       onClose();
     } else {
-      alert("Please try again later ...?");
+      toast("Please try again later ...?");
     }
   };
 

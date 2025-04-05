@@ -8,7 +8,7 @@ const ServiceCard = ({ service }) => {
       <h3 className="text-2xl font-semibold text-gray-800 mb-4">
         {service.title}
       </h3>
-      <p className="text-gray-600 mb-4">{service.description}</p>
+      <p className="text-gray-600 mb-4 md:min-h-24 h-36">{service.description}</p>
       <div className="mb-4">
         <span className="text-lg font-bold text-indigo-600">
           {service.price}
