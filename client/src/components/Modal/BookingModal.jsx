@@ -42,16 +42,15 @@ const BookingModal = ({ isOpen, onClose, service }) => {
         ...formData,
         serviceId: service._id,
         price: service.price,
-        title:service.title
+        title: service.title,
       };
 
-      const result = await dispatch(bookService(bookingData))
-      console.log("Result :", result);
+      await dispatch(bookService(bookingData));
 
       setSuccess(true);
       setTimeout(() => {
         setSuccess(false);
-        onClose(); // Close modal after success
+        onClose(); 
       }, 2000);
     } catch (error) {
       console.error("Booking failed:", error);
@@ -119,7 +118,7 @@ const BookingModal = ({ isOpen, onClose, service }) => {
                   />
                 </svg>
                 <h3 className="mt-2 text-lg font-medium text-gray-900">
-                  Booking Successful!
+                  Go to payment page
                 </h3>
               </div>
             </div>

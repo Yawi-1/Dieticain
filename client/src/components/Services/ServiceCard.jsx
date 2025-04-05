@@ -11,7 +11,7 @@ const ServiceCard = ({ service }) => {
       <p className="text-gray-600 mb-4 md:min-h-24 h-36">{service.description}</p>
       <div className="mb-4">
         <span className="text-lg font-bold text-indigo-600">
-          {service.price}
+          ₹{service.price.toFixed(2)}/
         </span>
         <span className="text-gray-500 ml-2">({service.duration})</span>
       </div>
