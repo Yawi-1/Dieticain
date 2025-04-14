@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require("express"); 
 const cors = require("cors");
 const http = require("http");
 const { Server } = require("socket.io");
@@ -61,7 +61,7 @@ app.get("/", (req, res) => {
   res.send("Nutri Care Server is Running .....");
 });
 // Start server
-server.listen(3001, () => {
+server.listen(3000, () => {
   console.log("🚀 Server running on https://dieticain.onrender.com");
   dbConnection();
 });

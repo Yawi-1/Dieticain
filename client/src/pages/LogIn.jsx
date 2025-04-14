@@ -17,8 +17,6 @@ export default function Login() {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     const res = await dispatch(login(formData));
-
-    console.log("Dispatch Response", res);
     if (res.type === "auth/login/fulfilled") {
       toast(`${res?.payload?.message} on ${formData.email}`);
       navigate("/admin");
