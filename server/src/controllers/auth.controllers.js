@@ -23,28 +23,25 @@ const signup = async (req, res) => {
     await user.save();
 
     const token = generateToken(user._id);
-    console.log(token)
+    console.log(token);
+    const isProduction = process.env.NODE_ENV === "production";
+
     res.cookie("authToken", token, {
       httpOnly: true,
-      secure: TextTrackCue,
-      sameSite: "None",
+      secure: isProduction,
+      sameSite: isProduction ? "None" : "Lax",
       maxAge: 3600000,
     });
 
-    res
-      .status(201)
-      .json({
-        message: "User created",
-        user: { id: user._id, name, email },
-        token,
-      });
+    res.status(201).json({
+      message: "User created",
+      user: { id: user._id, name, email },
+      token,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
-
-
-
 
 // Login function
 const login = async (req, res) => {
@@ -55,13 +52,15 @@ const login = async (req, res) => {
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ message: "Invalid Password" });
-    
+
     // Generate token
     const token = generateToken(user._id);
+    const isProduction = process.env.NODE_ENV === "production";
+    console.log(token, isProduction);
     res.cookie("authToken", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict",
+      secure: isProduction,
+      sameSite: isProduction ? "None" : "Lax",
       maxAge: 3600000,
     });
 
@@ -70,12 +69,10 @@ const login = async (req, res) => {
       user: { id: user._id, name: user.name, email },
       token,
     });
-
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
 };
-
 
 const verify = async (req, res) => {
   try {
@@ -98,4 +95,4 @@ const logout = async (req, res) => {
   res.json({ message: "Logged out" });
 };
 
-module.exports = { signup, login, verify, logout, };
+module.exports = { signup, login, verify, logout };
