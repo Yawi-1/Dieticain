@@ -91,8 +91,16 @@ const verify = async (req, res) => {
 
 // Logout function
 const logout = async (req, res) => {
-  res.clearCookie("authToken");
+  const isProduction = process.env.NODE_ENV === "production";
+
+  res.clearCookie("authToken", {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? "None" : "Lax",
+  });
+
   res.json({ message: "Logged out" });
 };
+
 
 module.exports = { signup, login, verify, logout };
