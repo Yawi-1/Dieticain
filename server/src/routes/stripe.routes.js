@@ -31,6 +31,7 @@ router.post("/create", async (req, res) => {
 
     res.json({ message: "Session Url revieved", url: session.url });
   } catch (error) {
+    res.redirect(500, `${process.env.FRONTEND_URL}/cancel`);
     console.error("Error creating checkout session:", error);
     res.status(500).json({ error: error.message });
   }

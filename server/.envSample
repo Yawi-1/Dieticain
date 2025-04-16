@@ -5,6 +5,5 @@ CLOUDINARY_API_SECRET =apisecret
 NODE_ENV=development
 JWT_SECRET = jwtsecret
 STRIPE_SECRET_KEY=ssecretkey
-STRIPE_WEBHOOK_SECRET=your_secret_here
 FRONTEND_URL = http://localhost:5173
 

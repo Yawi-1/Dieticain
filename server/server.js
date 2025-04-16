@@ -62,6 +62,6 @@ app.get("/", (req, res) => {
 });
 // Start server
 server.listen(3000, () => {
-  console.log("🚀 Server running on https://dieticain.onrender.com");
+  console.log("🚀 Server running on http://localhost:3000");
   dbConnection();
 });

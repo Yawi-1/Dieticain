@@ -23,10 +23,11 @@ const signup = async (req, res) => {
     await user.save();
 
     const token = generateToken(user._id);
+    console.log(token)
     res.cookie("authToken", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict",
+      secure: TextTrackCue,
+      sameSite: "None",
       maxAge: 3600000,
     });
 
