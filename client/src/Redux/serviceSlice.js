@@ -2,7 +2,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_URL = "https://dieticain.onrender.com";
+const API_URL = "http://localhost:3000";
 
 // Fetch services
 export const fetchService = createAsyncThunk("service/fetchService", async (_, { rejectWithValue }) => {
@@ -24,17 +24,18 @@ export const addService = createAsyncThunk("service/addService", async (formData
   }
 });
 
-// Book a service (create Stripe payment session)
+// Book a service 
 export const bookService = createAsyncThunk("service/bookService", async (data, { rejectWithValue }) => {
   try {
-    const response = await axios.post(`${API_URL}/api/payment/create`, data, {
-      headers: { 'Content-Type': 'application/json' },
+    const response = await axios.post(`${API_URL}/api/booking`, data, {
+      headers: { "Content-Type": "application/json" },
     });
-    return response.data.url; // Return the payment URL
+    return response.data.data;
   } catch (error) {
     return rejectWithValue(error.response?.data || error.message);
   }
 });
+
 
 // Dleete a service
 

@@ -7,7 +7,7 @@ export const login = createAsyncThunk(
   async ({ email, password }, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "https://dieticain.onrender.com/api/auth/login",
+        "http://localhost:3000/api/auth/login",
         { email, password },
         { withCredentials: true }
       );
@@ -25,7 +25,7 @@ export const verifyAuth = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        "https://dieticain.onrender.com/api/auth/verify",
+        "http://localhost:3000/api/auth/verify",
         { withCredentials: true }
       );
       return response.data.user;
@@ -40,7 +40,7 @@ export const logout = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       await axios.post(
-        "https://dieticain.onrender.com/api/auth/logout",
+        "http://localhost:3000/api/auth/logout",
         {},
         { withCredentials: true }
       );
