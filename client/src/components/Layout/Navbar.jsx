@@ -11,7 +11,6 @@ function Navbar() {
     { name: 'Services', path: '/services' },
     { name: 'Blog', path: '/blog' },
     { name: 'About', path: '/about' },
-    { name: 'Contact', path: '/contact' },
     { name: 'Admin', path: '/admin' },
   ];
 
@@ -31,8 +30,8 @@ function Navbar() {
                 {link.name}
               </Link>
             ))}
-            <Link to="/booking" className="bg-blue-600 text-white px-3 py-2 font-semibold text-sm rounded-lg hover:bg-blue-700">
-              Book Appointment
+            <Link to="/contact" className="hover:bg-blue-600 hover:text-white px-4 bg-white text-blue-600 border-blue-600 border transition-all  py-2 font-semibold text-sm rounded-full ">
+              Contact Us
             </Link>
           </div>
           

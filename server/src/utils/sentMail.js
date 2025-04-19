@@ -7,8 +7,8 @@ const router = express.Router();
 const transporter = nodemailer.createTransport({
     service:'gmail',
   auth: {
-    user: 'yawimalik786@gmail.com', 
-    pass: 'zsow jrsm ajju ettb', 
+    user: 'mudasirjavidmalik1@gmail.com', 
+    pass: 'rmin naen pmqw spyc', 
   },
 });
 
@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
 const sendEmail = async (to, subject, text) => {
   try {
     const info = await transporter.sendMail({
-      from: `yawimalik786@gmail.com`,
+      from: `Nutri Care `,
       to,
       subject,
       text,
@@ -28,18 +28,5 @@ const sendEmail = async (to, subject, text) => {
   }
 };
 
-// // API Route to Send Email
-// router.post('/email', async (req, res) => {
-//   try {
-//     const { to, subject, text } = req.body; // Get email details from request body
-//     if (!to || !subject || !text) {
-//       return res.status(400).json({ message: "All fields are required" });
-//     }
-//     await sendEmail(to, subject, text);
-//     res.json({ message: "Email sent successfully" });
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-// });
 
 module.exports = sendEmail;

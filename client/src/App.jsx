@@ -19,6 +19,7 @@ const Login = lazy(() => import("./pages/Login"));
 const Success = lazy(() => import("./pages/Success"));
 const Cancel = lazy(() => import("./pages/Cancel"));
 const AdminRoutes = lazy(() => import("./components/Admin/AdminRoutes"));
+import BMICalculator from "./components/BmiCalculator";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -69,6 +70,7 @@ const App = () => {
           <Route path="/contact" element={<Contact />} />
           <Route path="/success" element={<Success />} />
           <Route path="/cancel" element={<Cancel />} />
+          <Route path="/bmi" element={<BMICalculator />} />
           <Route
             path="/login"
             element={user ? <Navigate to="/admin" replace /> : <Login />}

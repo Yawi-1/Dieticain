@@ -3,6 +3,7 @@ const router = express.Router();
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
 const Booking = require("../models/booking.model");
+const sendEmail = require("../utils/sentMail");
 
 const razorpayClient = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
@@ -59,7 +60,8 @@ router.post("/verify", async (req, res) => {
     });
 
     await booking.save();
-
+    const emailContent = `Your booking has been confirmed. Payment ID: ${razorpay_payment_id}`;
+    await sendEmail(data.email, "Booking Confirmation", emailContent);
     res.status(201).json({
       success: true,
       message: "Payment verified and booking created",

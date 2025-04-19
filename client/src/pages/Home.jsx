@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { fetchService } from "../Redux/serviceSlice";
 import { useDispatch } from "react-redux";
 import Layout from "../components/Layout/Layout";
-import HeroImage from "../../public/HomeImage.jpg";
+import HeroImage from "/HomeImage.jpg";
 import FAQAccordion from "../components/Services/FAQAccordion ";
 import HomeServiceCard from "../components/Home/HomeServiceCard";
 import Testimonials from "../components/Home/Testimonials";
@@ -50,9 +50,9 @@ const Homepage = () => {
             achieve your wellness goals - all through our intuitive health
             platform designed for every lifestyle.
           </p>
-          <button className="cursor-pointer bg-orange-400 px-8 py-3 rounded-full hover:bg-white hover:text-orange-400 border-orange-400 border-2 transition-all duration-300">
-            Learn More
-          </button>
+          <Link to='/bmi' className="cursor-pointer bg-orange-400 px-8 py-3 rounded-full hover:bg-white hover:text-orange-400 border-orange-400 border-2 transition-all duration-300">
+            Learn More About Your Body
+          </Link>
         </div>
       </div>
 

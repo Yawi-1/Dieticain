@@ -4,7 +4,7 @@ export const fetchBookings = createAsyncThunk(
   "booking/fetchBooking",
   async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api/bookings");
+      const response = await axios.get("https://dieticain.onrender.com/api/bookings");
       return response.data.data;
     } catch (error) {
       console.log('Error fetching bookings :  ',error);
