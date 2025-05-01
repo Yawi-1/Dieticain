@@ -4,169 +4,165 @@ import axios from "axios";
 import Confetti from "react-confetti";
 import html2canvas from "html2canvas";
 import { FaCheckCircle, FaCopy, FaDownload, FaTicketAlt } from "react-icons/fa";
+import Layout from "../components/Layout/Layout";
 
 const Success = () => {
-    const [searchParams] = useSearchParams();
-    const sessionId = searchParams.get("session_id");
-    const [order, setOrder] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [copied, setCopied] = useState(false);
-    const [isSaving, setIsSaving] = useState(false);
-    const navigate = useNavigate();
-    const ticketRef = useRef(null);
+  const [searchParams] = useSearchParams();
+  const sessionId = searchParams.get("session_id");
+  const [order, setOrder] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [copied, setCopied] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const navigate = useNavigate();
+  const ticketRef = useRef(null);
 
-    useEffect(() => {
-        if (!sessionId) {
-            navigate("/");
-        }
-        if (sessionId) {
-            axios.get(`https://dieticain.onrender.com/api/payment/verify-payment?session_id=${sessionId}`)
-                .then(response => {
-                    setOrder(response.data.booking);
-                    setLoading(false);
-                })
-                .catch(err => {
-                    setError(err.response?.data?.error || "Something went wrong");
-                    setLoading(false);
-                });
-        }
-    }, [sessionId, navigate]);
+  useEffect(() => {
+    if (!sessionId) {
+      navigate("/");
+    } else {
+      axios
+        .get(
+          `https://dieticain.onrender.com/api/payment/razorpay/success?session_id=${sessionId}`
+        )
+        .then((res) => {
+          setOrder(res.data.booking);
+        })
+        .catch((err) => {
+          console.log(err);
+          setError(err.response?.data?.error || "Something went wrong");
+        })
+        .finally(() => setLoading(false));
+    }
+  }, [sessionId, navigate]);
 
-    const handleSaveImage = async () => {
-        if (!ticketRef.current) return;
-        
-        setIsSaving(true);
-        try {
-            const canvas = await html2canvas(ticketRef.current, {
-                useCORS: true,
-                scale: 2,
-                logging: true,
-                backgroundColor: null,
-                allowTaint: true
-            });
+  const handleCopy = () => {
+    navigator.clipboard.writeText(sessionId);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
-            canvas.toBlob((blob) => {
-                const link = document.createElement("a");
-                link.download = `ticket-${order.paymentId.slice(-6)}.png`;
-                link.href = URL.createObjectURL(blob);
-                link.click();
-                URL.revokeObjectURL(link.href);
-            }, "image/png");
-        } catch (err) {
-            console.error("Failed to save image:", err);
-            alert("Failed to save ticket. Please try again.");
-        } finally {
-            setIsSaving(false);
-        }
-    };
+  const handleSaveImage = async () => {
+    if (!ticketRef.current) return;
+    setIsSaving(true);
+    try {
+      const canvas = await html2canvas(ticketRef.current, {
+        useCORS: true,
+        backgroundColor: "#ffffff",
+      });
+      const image = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.href = image;
+      link.download = "booking-ticket.png";
+      link.click();
+    } catch (err) {
+      console.error("Error saving image:", err);
+      alert("Error saving image. Please try again.");
+    }
+    setIsSaving(false);
+  };
 
-    const handleCopyPaymentId = () => {
-        navigator.clipboard.writeText(order.paymentId);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-    };
+  if (loading) return <div className="text-center py-10">Loading...</div>;
+  if (error)
+    return <div className="text-red-600 text-center py-10">{error}</div>;
 
-    if (loading) return (
-        <div className="min-h-screen flex items-center justify-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-        </div>
-    );
+  return (
+    <Layout>
+      <div className="min-h-screen bg-[#f0fdf4]">
+        <Confetti recycle={false} numberOfPieces={400} gravity={0.2} />
 
-    if (error) return (
-        <div className="min-h-screen flex items-center justify-center">
-            <div className="bg-red-100 p-8 rounded-lg max-w-md text-center">
-                <h2 className="text-2xl text-red-600 font-bold mb-4">Error!</h2>
-                <p className="text-red-700">{error}</p>
-                <button 
-                    onClick={() => navigate("/")}
-                    className="mt-4 px-6 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
-                >
-                    Return Home
-                </button>
+        <div className="max-w-2xl mx-auto px-4 py-12 sm:py-16">
+          <div className="text-center mb-10">
+            <div className="mx-auto bg-green-500 w-24 h-24 rounded-full flex items-center justify-center mb-6">
+              <FaCheckCircle className="text-white text-5xl animate-bounce" />
             </div>
-        </div>
-    );
+            <h1 className="text-4xl font-bold text-gray-900 mb-3">
+              Payment Successful! 🎉
+            </h1>
+            <p className="text-lg text-gray-600">
+              Thank you,{" "}
+              <span className="font-semibold text-green-600">
+                {order?.name}
+              </span>
+              . Your booking for{" "}
+              <span className="font-semibold">{order?.serviceId?.title}</span>{" "}
+              is confirmed!
+            </p>
+          </div>
 
-    return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#f0f5ff] to-[#f8f0ff] p-6">
-            <Confetti numberOfPieces={300} gravity={0.15} />
-            
-            <div ref={ticketRef} className="relative bg-white rounded-2xl shadow-xl p-8 w-full max-w-lg border-4 border-dashed border-[#bfdbfe]">
-                <div className="absolute -top-5 left-1/2 transform -translate-x-1/2">
-                    <FaTicketAlt className="text-4xl text-[#3b82f6] bg-white p-1 rounded-full" />
-                </div>
-                
-                <div className="text-center mb-6">
-                    <FaCheckCircle className="text-6xl text-[#22c55e] mx-auto mb-4 animate-bounce" />
-                    <h1 className="text-3xl font-bold text-[#1e293b] mb-2">Payment Successful! 🎉</h1>
-                    <p className="text-lg text-[#475569]">Your booking is confirmed</p>
-                </div>
+          {/* Ticket Card */}
+          <div
+            ref={ticketRef}
+            className="rounded-xl shadow-2xl overflow-hidden border transform hover:scale-[1.01] transition-all"
+            style={{
+              backgroundColor: "#ffffff",
+              color: "#1f2937", // text-gray-800
+              borderColor: "#e5e7eb", // border-gray-200
+            }}
+          >
+            <div className="relative p-8">
+              <div className="flex items-center gap-3 mb-6">
+                <FaTicketAlt className="text-green-600 text-3xl" />
+                <h2 className="text-2xl font-bold text-gray-900">
+                  Booking Details
+                </h2>
+              </div>
 
-                <div className="space-y-4 mb-8">
-                    <div className="flex justify-between items-center p-3 bg-[#f8fafc] rounded-lg">
-                        <span className="font-semibold">Name:</span>
-                        <span className="text-[#334155]">{order.name}</span>
-                    </div>
-                    
-                    <div className="flex justify-between items-center p-3 bg-[#f8fafc] rounded-lg">
-                        <span className="font-semibold">Service ID:</span>
-                        <span className="text-[#334155]">{order.serviceId}</span>
-                    </div>
-                    
-                    <div className="flex justify-between items-center p-3 bg-[#f8fafc] rounded-lg">
-                        <span className="font-semibold">Amount Paid:</span>
-                        <span className="text-[#22c55e] font-bold">₹{order.price}</span>
-                    </div>
-                    
-                    <div className="flex justify-between items-center p-3 bg-[#f8fafc] rounded-lg">
-                        <span className="font-semibold">Payment ID:</span>
-                        <div className="flex items-center gap-2 max-w-[60%]">
-                            <span className="text-[#334155] truncate">{order.paymentId}</span>
-                            <button 
-                                onClick={handleCopyPaymentId}
-                                className="text-[#3b82f6] hover:text-[#2563eb] flex-shrink-0"
-                                title="Copy Payment ID"
-                            >
-                                <FaCopy />
-                            </button>
-                        </div>
-                    </div>
+              <div className="space-y-4 text-gray-700">
+                <div className="flex justify-between items-center pb-2 border-b border-dashed border-gray-200">
+                  <span className="font-medium">Booking ID:</span>
+                  <span style={{ color: "#10b981" }}>{order?._id}</span>
                 </div>
-
-                {copied && (
-                    <div className="mb-4 text-[#22c55e] text-sm text-center animate-bounce">
-                        Copied to clipboard! ✅
-                    </div>
-                )}
-
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <button 
-                        onClick={handleSaveImage}
-                        disabled={isSaving}
-                        className="flex items-center justify-center gap-2 px-6 py-3 bg-[#3b82f6] text-white rounded-lg hover:bg-[#2563eb] transition disabled:opacity-50"
-                    >
-                        <FaDownload /> 
-                        {isSaving ? 'Saving...' : 'Save Ticket'}
-                    </button>
-                    <button 
-                        onClick={() => navigate("/dashboard")}
-                        className="flex items-center justify-center gap-2 px-6 py-3 bg-[#8b5cf6] text-white rounded-lg hover:bg-[#7c3aed] transition"
-                    >
-                        Go to Dashboard
-                    </button>
+                <div className="flex justify-between items-center pb-2 border-b border-dashed border-gray-200">
+                  <span className="font-medium">Amount Paid:</span>
+                  <span style={{ color: "#10b981" }}>
+                    ₹{order?.price} /- INR
+                  </span>
                 </div>
-
-                <div className="mt-6 text-center text-sm text-[#64748b]">
-                    🎫 Present this ticket at the time of service
+                <div className="flex justify-between items-center pb-2 border-b border-dashed border-gray-200">
+                  <span className="font-medium">Service Mode:</span>
+                  <span className="capitalize text-blue-600 bg-blue-100 px-3 py-1 rounded-full text-sm">
+                    {order?.mode}
+                  </span>
                 </div>
+                <div className="flex justify-between items-center">
+                  <span className="font-medium">Contact Email:</span>
+                  <span className="text-gray-600">{order?.email}</span>
+                </div>
+              </div>
+
+              <div className="mt-8 bg-gray-50 p-4 rounded-lg">
+                <p className="text-sm text-gray-500 text-center">
+                  Present this ID at the service location. A confirmation email
+                  has been sent to your address.
+                </p>
+              </div>
             </div>
+          </div>
 
-            <div className="mt-8 text-center text-[#64748b] text-sm">
-                Need help? 📧 Contact support@example.com
-            </div>
+          {/* Action Buttons */}
+          <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+            <button
+              onClick={handleCopy}
+              className="flex items-center justify-center gap-2 px-6 py-3 bg-white border-2 border-green-500 text-green-600 rounded-lg font-medium hover:bg-green-50 transition-colors"
+            >
+              <FaCopy className="text-lg" />
+              {copied ? "Copied!" : "Copy Booking ID"}
+            </button>
+
+            <button
+              onClick={handleSaveImage}
+              disabled={isSaving}
+              className="flex items-center justify-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors disabled:opacity-50"
+            >
+              <FaDownload className="text-lg" />
+              {isSaving ? "Downloading..." : "Download Ticket"}
+            </button>
+          </div>
         </div>
-    );
+      </div>
+    </Layout>
+  );
 };
 
 export default Success;

@@ -1,4 +1,4 @@
-import React, { useEffect, lazy, Suspense } from "react";
+import React, { useEffect, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { verifyAuth } from "./Redux/authSlice";
@@ -7,18 +7,20 @@ import { addServiceFromSocket } from "./Redux/serviceSlice";
 import { ToastContainer, toast } from "react-toastify";
 import Loader from "./components/Modal/Loader";
 
+// Home is imported normally to show instantly
+import Home from "./pages/Home"; 
+
 // Lazy-loaded pages
-const Home = lazy(() => import("./pages/Home"));
-const About = lazy(() => import("./pages/About"));
-const Services = lazy(() => import("./pages/Services"));
-const ServiceDetail = lazy(() => import("./components/Services/ServiceDetail"));
-const Blog = lazy(() => import("./pages/Blog"));
-const BlogDetail = lazy(() => import("./pages/BlogDetail"));
-const Contact = lazy(() => import("./pages/Contact"));
-const Login = lazy(() => import("./pages/Login"));
-const Success = lazy(() => import("./pages/Success"));
-const Cancel = lazy(() => import("./pages/Cancel"));
-const AdminRoutes = lazy(() => import("./components/Admin/AdminRoutes"));
+const About = React.lazy(() => import("./pages/About"));
+const Services = React.lazy(() => import("./pages/Services"));
+const ServiceDetail = React.lazy(() => import("./components/Services/ServiceDetail"));
+const Blog = React.lazy(() => import("./pages/Blog"));
+const BlogDetail = React.lazy(() => import("./pages/BlogDetail"));
+const Contact = React.lazy(() => import("./pages/Contact"));
+const Login = React.lazy(() => import("./pages/Login"));
+const Success = React.lazy(() => import("./pages/Success"));
+const Cancel = React.lazy(() => import("./pages/Cancel"));
+const AdminRoutes = React.lazy(() => import("./components/Admin/AdminRoutes"));
 import BMICalculator from "./components/BmiCalculator";
 
 const App = () => {
@@ -59,30 +61,44 @@ const App = () => {
 
   return (
     <>
-      <Suspense fallback={<Loader />}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/services/:id" element={<ServiceDetail />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:id" element={<BlogDetail />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/success" element={<Success />} />
-          <Route path="/cancel" element={<Cancel />} />
-          <Route path="/bmi" element={<BMICalculator />} />
-          <Route
-            path="/login"
-            element={user ? <Navigate to="/admin" replace /> : <Login />}
-          />
-          <Route
-            path="/admin/*"
-            element={user ? <AdminRoutes /> : <Navigate to="/login" replace />}
-          />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Suspense>
-      <ToastContainer />
+      <Routes>
+        {/* Home loads instantly */}
+        <Route path="/" element={<Home />} />
+
+        {/* Suspense for lazy-loaded routes */}
+        <Route
+          path="*"
+          element={
+            <Suspense fallback={<Loader />}>
+              <Routes>
+                <Route path="/about" element={<About />} />
+                <Route path="/services" element={<Services />} />
+                <Route path="/services/:id" element={<ServiceDetail />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/blog/:id" element={<BlogDetail />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/success" element={<Success />} />
+                <Route path="/cancel" element={<Cancel />} />
+                <Route path="/bmi" element={<BMICalculator />} />
+                <Route
+                  path="/login"
+                  element={user ? <Navigate to="/admin" replace /> : <Login />}
+                />
+                <Route
+                  path="/admin/*"
+                  element={user ? <AdminRoutes /> : <Navigate to="/login" replace />}
+                />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </Suspense>
+          }
+        />
+      </Routes>
+
+      <ToastContainer 
+      theme="dark"
+      position="top-center"
+      />
     </>
   );
 };

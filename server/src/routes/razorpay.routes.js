@@ -5,22 +5,24 @@ const crypto = require("crypto");
 const Booking = require("../models/booking.model");
 const sendEmail = require("../utils/sentMail");
 
+// Razorpay instance
 const razorpayClient = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
-// Create Razorpay Order
+// ✅ Create Razorpay Order
 router.post("/create", async (req, res) => {
   try {
     const { amount } = req.body;
     const options = {
-      amount: amount * 100,
+      amount: amount * 100, 
       currency: "INR",
       receipt: `receipt_${Date.now()}`,
     };
 
     const order = await razorpayClient.orders.create(options);
+
     res.status(200).json({
       success: true,
       message: "Razorpay order created successfully",
@@ -36,11 +38,17 @@ router.post("/create", async (req, res) => {
   }
 });
 
-// Verify Payment and Create Booking
+// ✅ Verify Payment and Save Booking
 router.post("/verify", async (req, res) => {
   try {
-    const { razorpay_payment_id, razorpay_order_id, razorpay_signature, data } = req.body;
-    
+    const {
+      razorpay_payment_id,
+      razorpay_order_id,
+      razorpay_signature,
+      data, // booking details like name, email, etc.
+    } = req.body;
+
+    // Generate expected signature
     const generatedSignature = crypto
       .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
       .update(`${razorpay_order_id}|${razorpay_payment_id}`)
@@ -53,6 +61,7 @@ router.post("/verify", async (req, res) => {
       });
     }
 
+    // Save to MongoDB
     const booking = new Booking({
       ...data,
       paymentId: razorpay_payment_id,
@@ -60,12 +69,16 @@ router.post("/verify", async (req, res) => {
     });
 
     await booking.save();
-    const emailContent = `Your booking has been confirmed. Payment ID: ${razorpay_payment_id}`;
+
+    // Send confirmation email
+    const emailContent = `Hey ${data.email} \n\n Your booking has been confirmed.\n\nPayment ID: ${razorpay_payment_id}`;
     await sendEmail(data.email, "Booking Confirmation", emailContent);
+
+    // ✅ Respond with booking ID (used as sessionId)
     res.status(201).json({
       success: true,
       message: "Payment verified and booking created",
-      booking,
+      sessionId: booking._id,
     });
   } catch (error) {
     console.error("Payment verification error:", error);
@@ -74,6 +87,20 @@ router.post("/verify", async (req, res) => {
       message: "Payment verification failed",
       error: error.message,
     });
+  }
+});
+
+router.get('/success', async (req, res) => {
+  const { session_id } = req.query;
+  try {
+    const booking = await Booking.findById(session_id).populate('serviceId','title price image description duration');
+    if (!booking) {
+      return res.status(404).json({ success: false, message: 'Booking not found' });
+    }
+    res.status(200).json({ success: true, booking });
+  } catch (error) {
+    console.error("Error fetching booking:", error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
   }
 });
 

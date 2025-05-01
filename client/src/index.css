@@ -34,7 +34,7 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
-  .fade-exit-active {
+  .fade-exit-active { 
     opacity: 0;
     transform: translateY(-20px);
     transition: all 500ms ease-out;
@@ -70,3 +70,10 @@ body {
       
     }
   }
+
+  /* In your main CSS file or global styles */
+* {
+  --tw-gradient-from: initial !important;
+  --tw-gradient-to: initial !important;
+  --tw-gradient-stops: initial !important;
+}
