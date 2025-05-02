@@ -7,9 +7,6 @@ import { Link } from "react-router-dom";
 export default function Blog() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [selectedblog, setSelectedblog] = useState(null);
-  const [comments, setComments] = useState([]);
-  const [newComment, setNewComment] = useState("");
   const dispatch = useDispatch();
   const { blogs } = useSelector((state) => state.blog);
   const categories = ["all", ...new Set(blogs.map((blog) => blog.category))];
@@ -23,13 +20,6 @@ export default function Blog() {
     return matchesSearch && matchesCategory;
   });
 
-  const handleCommentSubmit = (e) => {
-    e.preventDefault();
-    if (newComment.trim()) {
-      setComments([...comments, { id: comments.length + 1, text: newComment }]);
-      setNewComment("");
-    }
-  };
 
   useEffect(() => {
     dispatch(fetchBlogs());

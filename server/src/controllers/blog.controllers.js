@@ -59,5 +59,24 @@ const getBlogById = async (req, res) => {
   }
 };
 
+const addComment = async(req,res)=>{
+  try {
+      const {blogId,email,comment} = req.body;
+      const blog = await Blog.findById(blogId);
+      if(!blogId){
+        return res.status(400).json({message:'Blog doesn\'t exist',success:false})
+      }
+      const isEmail = blog.comments.some((item)=> item.email === email);
+      if(isEmail){
+        return res.status(400).json({message:'You can only add one comment ', success:false})
+      }
+      blog.comments.push({email,comment});
+      await blog.save();
+      return res.status(200).json({message:'New Comment Added',success:true, data:blog})
+  } catch (error) {
+    res.status(500).json({message:error.message,success:false})
+  }
+}
 
-module.exports =  {getAllBlogs,addBlog,deleteBlog,getBlogById}
+
+module.exports =  {getAllBlogs,addBlog,deleteBlog,getBlogById,addComment}

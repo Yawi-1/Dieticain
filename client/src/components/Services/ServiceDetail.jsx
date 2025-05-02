@@ -69,11 +69,11 @@ const ServiceDetail = () => {
             <div className="p-8">
               <h1 className="text-3xl font-bold text-gray-900 mb-4">
                 {service.title}
-              </h1>
+              </h1> 
               
               <div className="mb-6">
                 <span className="text-2xl font-bold text-indigo-600">
-                  {service.price}
+                  ₹{service.price}
                 </span>
                 <span className="ml-2 text-gray-500">
                   ({service.duration})

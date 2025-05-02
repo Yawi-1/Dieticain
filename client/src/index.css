@@ -70,10 +70,23 @@ body {
       
     }
   }
-
-  /* In your main CSS file or global styles */
-* {
-  --tw-gradient-from: initial !important;
-  --tw-gradient-to: initial !important;
-  --tw-gradient-stops: initial !important;
+.navBtn:hover{
+  color: white;
 }
+
+  .navBtn::before{
+    content: "";
+    background-color: rgb(68, 68, 236);
+    width: 0%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 50px;
+    transition: width 0.3s ease-in-out;
+    z-index: -1;
+  }
+ .navBtn:hover::before{
+      width: 100%; 
+  }
+ 

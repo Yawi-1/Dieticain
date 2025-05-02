@@ -63,7 +63,7 @@ app.get("/", (req, res) => {
   res.send("Nutri Care Server is Running .....");
 });
 // Start server
-server.listen(3000, () => {
+server.listen(8000, () => {
   console.log("🚀 Server running on https://dieticain.onrender.com");
   dbConnection();
 });

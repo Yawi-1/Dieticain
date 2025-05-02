@@ -42,20 +42,31 @@ export const deleteBlog = createAsyncThunk(
 );
 
 //Get a single blog
-export const singleBlog = createAsyncThunk('blog/fetchOne', async(id, {rejectWithValue}) => {
+export const singleBlog = createAsyncThunk(
+  "blog/fetchOne",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${API_URL}/${id}`);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+// Add Comment
+export const addComment = createAsyncThunk("blog/addComment", async (data) => {
   try {
-     const response = await axios.get(`${API_URL}/${id}`);
-     return response.data.data;
+    const response = await axios.post(`${API_URL}/add-comment`, data);
+    return response.data.data;
   } catch (error) {
     return rejectWithValue(error.response?.data || error.message);
   }
-})
-
-
+});
 
 const blogSlice = createSlice({
   name: "blogs",
-  initialState: { singleBlog:{}, blogs: [], status: "idle", error: null },
+  initialState: { singleBlog: {}, blogs: [], status: "idle", error: null },
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -97,10 +108,21 @@ const blogSlice = createSlice({
       })
       .addCase(singleBlog.fulfilled, (state, action) => {
         state.singleBlog = action.payload;
-        state.status = "success";     
+        state.status = "success";
       })
       .addCase(singleBlog.rejected, (state, action) => {
         (state.status = "failed"), (state.error = action.payload);
+      })
+      .addCase(addComment.pending,(state,action)=>{
+             state.status = 'loading'
+      })
+      .addCase(addComment.fulfilled,(state,action)=>{
+             state.status ='success';
+             state.singleBlog = action.payload;
+      })
+      .addCase(addComment.rejected,(state,action)=>{
+             state.status = 'failed'
+             state.error = action.payload
       })
   },
 });
