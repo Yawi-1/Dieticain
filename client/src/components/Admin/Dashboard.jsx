@@ -87,7 +87,7 @@ export default function Dashboard() {
               <CurrencyDollarIcon className="w-6 h-6 text-indigo-500" />
             </div>
             <div>
-              <p className="text-sm text-gray-500">Total Revenue</p>
+              <p className="text-sm text-gray-500">Total Sales</p>
               <p className="text-2xl font-bold text-gray-800">₹ {totalRevenue}</p>
             </div>
           </div>

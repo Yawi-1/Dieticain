@@ -5,6 +5,7 @@ import Dashboard from "./Dashboard";
 import Bookings from "./Booking";
 import ServiceTable from './ServiceTable'
 import BlogTable from './BlogTable'
+import Contact from './Contact'
 
 
 const AdminRoutes = () => {
@@ -15,6 +16,7 @@ const AdminRoutes = () => {
         <Route path="/bookings" element={<Bookings />} />
         <Route path="/services" element={<ServiceTable />} />
         <Route path="/blogs" element={<BlogTable />} />
+        <Route path="/contact" element={<Contact />} />
       </Routes>
     </AdminLayout>
   );

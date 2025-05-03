@@ -12,6 +12,7 @@ const paymentRouter = require('./src/routes/stripe.routes.js');
 const blogRouter = require('./src/routes/blog.routes.js');
 const bookingRouter = require('./src/routes/booking.routes.js');
 const razorPayRouter = require('./src/routes/razorpay.routes.js');
+const contactRouter = require('./src/routes/contact.routes.js')
 
 const app = express();
 
@@ -38,6 +39,7 @@ app.use("/api/payment", paymentRouter);
 app.use("/api/payment/razorpay", razorPayRouter);
 app.use("/api/blog", blogRouter);
 app.use("/api/bookings", bookingRouter);
+app.use("/api/contact", contactRouter);
 
 
 
@@ -64,6 +66,6 @@ app.get("/", (req, res) => {
 });
 // Start server
 server.listen(8000, () => {
-  console.log("🚀 Server running on https://dieticain.onrender.com");
+  console.log("🚀 Server running on http://localhost:8000");
   dbConnection();
 });

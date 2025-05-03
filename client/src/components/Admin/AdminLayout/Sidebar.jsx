@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { MdDashboard } from "react-icons/md";
-import { IoIosAddCircle } from "react-icons/io";
+import { IoIosAddCircle,IoMdQuote } from "react-icons/io";
 import { FaServicestack, FaBars } from "react-icons/fa6";
 import { TbBrandBooking } from "react-icons/tb";
 import { IoLogOut } from "react-icons/io5";
@@ -16,6 +16,7 @@ const Sidebar = ({ isOpen,setIsSidebarOpen }) => {
     { link: "/bookings", icon: <TbBrandBooking />, text: "Bookings" },
     { link: "/services", icon: <FaServicestack />, text: "Services" },
     { link: "/blogs", icon: <IoIosAddCircle />, text: "Blogs" },
+    { link: "/contact", icon: <IoMdQuote />, text: "Queries" },
   ];
 
   const handleLogout  = ()=>{

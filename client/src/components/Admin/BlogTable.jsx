@@ -63,6 +63,7 @@ const BlogTable = () => {
               <th className="p-3 text-left">Title</th>
               <th className="p-3 text-left">Category</th>
               <th className="p-3 text-left">Description</th>
+              <th className="p-3 text-left">Comments</th>
               <th className="p-3 text-left">Actions</th>
             </tr>
           </thead>
@@ -72,7 +73,7 @@ const BlogTable = () => {
                 key={blog._id}
                 className={`${
                   index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                } hover:bg-gray-100 transition`}
+                } hover:bg-gray-100 transition my-2`}
               >
                 <td className="p-3">{blog.title}</td>
                 <td className="p-3">{blog.category}</td>
@@ -80,6 +81,9 @@ const BlogTable = () => {
                   {blog.content.length > 60
                     ? blog.content.slice(0, 60) + "..."
                     : blog.content}
+                </td>
+                <td className="p-3">
+                {blog.comments.length} comments
                 </td>
                 <td className="p-3 flex gap-2">
                   <button
