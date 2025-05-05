@@ -1,48 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import {getContacts} from '../../Redux/contactSlice'
+import {useDispatch,useSelector} from 'react-redux'
 
 const ContactTable = () => {
-  const [contacts, setContacts] = useState([
-    {
-      _id: "1",
-      name: "Alice Johnson",
-      email: "alice@example.com",
-      subject: "Website Issue",
-      message: "The contact form isn't submitting correctly.",
-      status: "pending",
-    },
-    {
-      _id: "2",
-      name: "Bob Smith",
-      email: "bob.smith@example.com",
-      subject: "Partnership Inquiry",
-      message: "I would like to discuss a potential collaboration.",
-      status: "resolved",
-    },
-    {
-      _id: "3",
-      name: "Charlie Brown",
-      email: "charlie.brown@example.com",
-      subject: "Support Needed",
-      message: "How do I reset my password?",
-      status: "pending",
-    },
-    {
-      _id: "4",
-      name: "Diana Prince",
-      email: "diana@example.com",
-      subject: "Billing Question",
-      message: "Can I get a copy of my invoice?",
-      status: "resolved",
-    },
-    {
-      _id: "5",
-      name: "Ethan Hunt",
-      email: "ethan.hunt@example.com",
-      subject: "Feedback",
-      message: "Great experience! Keep it up.",
-      status: "pending",
-    },
-  ]);
+  const {contacts} = useSelector(state=>state.contact) ;
+  const dispatch = useDispatch()
 
   const handleStatusUpdate = (id, currentStatus) => {
     const newStatus = currentStatus === "pending" ? "resolved" : "pending";
@@ -52,6 +14,11 @@ const ContactTable = () => {
       )
     );
   };
+  useEffect(()=>{
+    
+    dispatch(getContacts())
+  },[])
+
 
   return (
     <div className="p-3  min-h-screen">
@@ -71,7 +38,7 @@ const ContactTable = () => {
               </tr>
             </thead>
             <tbody className="text-gray-700 text-sm divide-y divide-gray-100">
-              {contacts.map((contact) => (
+              {contacts?.map((contact) => (
                 <tr
                   key={contact._id}
                   className="hover:bg-gray-50 transition duration-150"
