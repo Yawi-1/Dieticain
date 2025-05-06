@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from "react";
 import {getContacts} from '../../Redux/contactSlice'
 import {useDispatch,useSelector} from 'react-redux'
+import { updateContacts } from "../../Redux/contactSlice";
 
 const ContactTable = () => {
   const {contacts} = useSelector(state=>state.contact) ;
   const dispatch = useDispatch()
 
-  const handleStatusUpdate = (id, currentStatus) => {
-    const newStatus = currentStatus === "pending" ? "resolved" : "pending";
-    setContacts((prev) =>
-      prev.map((contact) =>
-        contact._id === id ? { ...contact, status: newStatus } : contact
-      )
-    );
-  };
   useEffect(()=>{
-    
     dispatch(getContacts())
-  },[])
+  },[dispatch])
 
+  const handleStatusUpdate = async(id,status)=>{
+       const newStatus = status==='pending'? 'resolved':'pending'
+    try {
+        dispatch(updateContacts(id,newStatus));
+    } catch (error) {
+      console.log('Error at status change :',error)
+    }
+  }
 
   return (
     <div className="p-3  min-h-screen">

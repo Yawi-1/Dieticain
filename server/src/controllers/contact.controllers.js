@@ -5,7 +5,7 @@ const createContact = async (req, res) => {
     const { name, email, subject, message } = req.body;
     const newContact = new Contact({ name, email, subject, message });
     await newContact.save();
-    global.io.emit("new-contact", newContact); //Send real time contact to admin
+    global.io.emit("new-contact", newContact); 
     res
       .status(201)
       .json({ message: "Contact created successfully", data: newContact });
@@ -28,9 +28,10 @@ const getContacts = async (req, res) => {
 const updateContact = async (req, res) => {
   try {
     const { id } = req.params;
+    console.log(req.body)
     const updatedContact = await Contact.findByIdAndUpdate(id, req.body, {
       new: true,
-      runValidators: true,
+      runValidators: true, 
     });
     if (!updatedContact) {
       return res.status(404).json({ message: "Contact not found" });

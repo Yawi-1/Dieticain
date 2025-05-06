@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Layout from "../components/Layout/Layout";
 import { toast } from "react-toastify";
-import { createContact } from "../Redux/contactSlice";
+import { createContact, updateContacts } from "../Redux/contactSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function Contact() {
@@ -24,6 +24,7 @@ export default function Contact() {
     dispatch(createContact(formData))
     setFormData({ name: "", email: "", subject: "", message: "" });
   };
+
 
   return (
     <Layout>
@@ -68,7 +69,7 @@ export default function Contact() {
               onChange={handleChange}
               required
             ></textarea>
-            <button disabled={status === 'pending'} className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">
+            <button  disabled={status === 'pending'} className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">
               {
                 status ==='pending'? 'Sending...' : 'Submit'
               }

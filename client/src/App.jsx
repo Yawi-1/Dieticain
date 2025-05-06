@@ -6,14 +6,19 @@ import socket from "./utils/socket";
 import { addServiceFromSocket } from "./Redux/serviceSlice";
 import { ToastContainer, toast } from "react-toastify";
 import Loader from "./components/Modal/Loader";
+import BMICalculator from "./components/BmiCalculator";
+import { addContactFromSocket } from "./Redux/contactSlice";
 
 // Home is imported normally to show instantly
-import Home from "./pages/Home"; 
+import Home from "./pages/Home";
 
 // Lazy-loaded pages
 const About = React.lazy(() => import("./pages/About"));
 const Services = React.lazy(() => import("./pages/Services"));
-const ServiceDetail = React.lazy(() => import("./components/Services/ServiceDetail"));
+const ServiceDetail = React.lazy(() =>
+  import("./components/Services/ServiceDetail")
+);
+
 const Blog = React.lazy(() => import("./pages/Blog"));
 const BlogDetail = React.lazy(() => import("./pages/BlogDetail"));
 const Contact = React.lazy(() => import("./pages/Contact"));
@@ -21,7 +26,7 @@ const Login = React.lazy(() => import("./pages/Login"));
 const Success = React.lazy(() => import("./pages/Success"));
 const Cancel = React.lazy(() => import("./pages/Cancel"));
 const AdminRoutes = React.lazy(() => import("./components/Admin/AdminRoutes"));
-import BMICalculator from "./components/BmiCalculator";
+
 
 const App = () => {
   const dispatch = useDispatch();
@@ -41,19 +46,25 @@ const App = () => {
     };
 
     const handleNewService = async (newService) => {
-      console.log("📦 New service received:", newService);
       await dispatch(addServiceFromSocket(newService));
       toast.success("New Service added..");
+    };
+    const handleContact = async (newContact) => {
+      console.log("Socket Contact : ", newContact);
+      await dispatch(addContactFromSocket(newContact));
+      toast.success("New Contact added.");
     };
 
     socket.on("connect", handleConnect);
     socket.on("disconnect", handleDisconnect);
     socket.on("new-service", handleNewService);
+    socket.on("new-contact", handleContact);
 
     return () => {
       socket.off("connect", handleConnect);
       socket.off("disconnect", handleDisconnect);
       socket.off("new-service", handleNewService);
+      socket.off("new-contact", handleContact);
     };
   }, [dispatch]);
 
@@ -86,7 +97,9 @@ const App = () => {
                 />
                 <Route
                   path="/admin/*"
-                  element={user ? <AdminRoutes /> : <Navigate to="/login" replace />}
+                  element={
+                    user ? <AdminRoutes /> : <Navigate to="/login" replace />
+                  }
                 />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
@@ -95,10 +108,7 @@ const App = () => {
         />
       </Routes>
 
-      <ToastContainer 
-      theme="dark"
-      position="top-center"
-      />
+      <ToastContainer theme="dark" position="top-center" />
     </>
   );
 };
