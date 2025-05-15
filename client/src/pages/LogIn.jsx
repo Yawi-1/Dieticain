@@ -13,6 +13,7 @@ export default function Login() {
   });
   const { loading, error } = useSelector((state) => state.auth);
 
+
   // Handle email/password submission
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
@@ -29,7 +30,7 @@ export default function Login() {
         <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg">
           <div className="text-center">
             <h2 className="text-3xl font-extrabold text-gray-900">Admin Login</h2>
-            {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+            {error && <p className="mt-2 text-sm text-red-600">{error.message}</p>}
           </div>
 
           <form onSubmit={handleLoginSubmit} className="mt-8 space-y-6">

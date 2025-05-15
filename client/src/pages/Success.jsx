@@ -23,7 +23,7 @@ const Success = () => {
     } else {
       axios
         .get(
-          `http://localhost:8000/api/payment/razorpay/success?session_id=${sessionId}`
+          `https://dieticain.onrender.com/api/payment/razorpay/success?session_id=${sessionId}`
         )
         .then((res) => {
           setOrder(res.data.booking);
@@ -43,23 +43,24 @@ const Success = () => {
   };
 
   const handleSaveImage = async () => {
-    if (!ticketRef.current) return;
-    setIsSaving(true);
-    try {
-      const canvas = await html2canvas(ticketRef.current, {
-        useCORS: true,
-        backgroundColor: "#ffffff",
-      });
-      const image = canvas.toDataURL("image/png");
-      const link = document.createElement("a");
-      link.href = image;
-      link.download = "booking-ticket.png";
-      link.click();
-    } catch (err) {
-      console.error("Error saving image:", err);
-      alert("Error saving image. Please try again.");
-    }
-    setIsSaving(false);
+    window.print();
+    // if (!ticketRef.current) return;
+    // setIsSaving(true);
+    // try {
+    //   const canvas = await html2canvas(ticketRef.current, {
+    //     useCORS: true,
+    //     backgroundColor: "#ffffff",
+    //   });
+    //   const image = canvas.toDataURL("image/png");
+    //   const link = document.createElement("a");
+    //   link.href = image;
+    //   link.download = "booking-ticket.png";
+    //   link.click();
+    // } catch (err) {
+    //   console.error("Error saving image:", err);
+    //   alert("Error saving image. Please try again.");
+    // }
+    // setIsSaving(false);
   };
 
   if (loading) return <div className="text-center py-10">Loading...</div>;
@@ -156,7 +157,7 @@ const Success = () => {
               className="flex items-center justify-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors disabled:opacity-50"
             >
               <FaDownload className="text-lg" />
-              {isSaving ? "Downloading..." : "Download Ticket"}
+              {isSaving ? "Downloading..." : "Print Ticket"}
             </button>
           </div>
         </div>

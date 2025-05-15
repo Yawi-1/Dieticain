@@ -47,8 +47,8 @@ function Navbar() {
                 {link.name}
               </Link>
             ))}
-            <Link to="/booking" className="block mt-2 bg-blue-600 text-white text-center py-2 rounded-lg hover:bg-blue-700" onClick={() => setIsOpen(false)}>
-              Book Appointment
+            <Link to="/contact" className="block mt-2 bg-blue-600 text-white text-center py-2 rounded-lg hover:bg-blue-700" onClick={() => setIsOpen(false)}>
+              Contact Us
             </Link>
           </div>
         )}

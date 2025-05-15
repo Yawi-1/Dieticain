@@ -8,17 +8,21 @@ import {
 } from "@heroicons/react/24/outline";
 import { fetchBookings } from "../../Redux/bookingSlice";
 import {fetchService} from "../../Redux/serviceSlice";
+import {getContacts} from '../../Redux/contactSlice'
 import { useSelector,useDispatch } from "react-redux";
 import { useEffect } from "react";
+import {Link} from 'react-router-dom'
 
 export default function Dashboard() {
   const { bookings, status } = useSelector((state) => state.booking);
   const  {services}  = useSelector((state) => state.service);
+  const {contacts} = useSelector(state=>state.contact)
   const totalRevenue = bookings.reduce((acc, booking) =>acc + booking.price, 0); 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchBookings());
     dispatch(fetchService());
+    dispatch(getContacts());
   }, []);
   return (
     <div className="p-6 sm:p-8">
@@ -28,11 +32,13 @@ export default function Dashboard() {
           Welcome Back, Admin😍
         </h1>
         <div className="flex gap-4">
-          <button className="p-2 rounded-lg hover:bg-gray-100">
+          <Link to='/admin/contact' className="relative p-2 rounded-lg hover:bg-gray-100">
             <BellIcon className="w-6 h-6 text-gray-600" />
-          </button>
+            <span className="absolute top-0 right-0 text-red-400">{contacts.filter((item)=> item.status === 'pending').length}</span>
+          </Link>
           <button className="p-2 rounded-lg hover:bg-gray-100">
             <UserIcon className="w-6 h-6 text-gray-600" />
+            <dialog>Hello</dialog>
           </button>
         </div>
       </div>
