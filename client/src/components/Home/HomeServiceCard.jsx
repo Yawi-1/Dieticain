@@ -17,7 +17,7 @@ const HomeServiceCard = ({ title, description, image,id }) => (
       to={`/services/${id}`}
       className="w-36 bg-orange-400 text-white px-4 py-2 rounded-full hover:bg-orange-500 transition-colors duration-200 mt-auto"
     >
-      Learn More
+      Read More ...
     </Link>
   </div>
 </div>

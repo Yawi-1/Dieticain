@@ -5,6 +5,7 @@ import Layout from "../components/Layout/Layout";
 import ServiceCard from "../components/Services/ServiceCard";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchService } from "../Redux/serviceSlice";
+import { Link } from "react-router-dom";
 
 const Services = () => {
   const { services } = useSelector((state) => state.service);
@@ -79,14 +80,14 @@ const Services = () => {
               <p className="text-gray-600 mb-8 max-w-xl mx-auto">
                 Schedule a free 15-minute consultation to discuss your needs.
               </p>
-              <motion.a
+              <Link to='/contact'
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 href="#contact"
                 className="inline-block bg-gradient-to-r from-blue-600 to-green-600 text-white py-3 px-8 rounded-xl text-lg font-medium hover:shadow-lg transition-all duration-300"
               >
                 Request Consultation
-              </motion.a>
+              </Link>
             </div>
           </motion.div>
         </div>

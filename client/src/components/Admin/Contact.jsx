@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {getContacts} from '../../Redux/contactSlice'
 import {useDispatch,useSelector} from 'react-redux'
 import { updateContacts } from "../../Redux/contactSlice";
+import {toast} from 'react-toastify'
 
 const ContactTable = () => {
   const {contacts} = useSelector(state=>state.contact) ;
@@ -12,9 +13,11 @@ const ContactTable = () => {
   },[dispatch])
 
   const handleStatusUpdate = async(id,status)=>{
-       const newStatus = status==='pending'? 'resolved':'pending'
+       const newStatus = status==='pending'? 'resolved':'pending';
+      
     try {
-        dispatch(updateContacts(id,newStatus));
+      await dispatch(updateContacts({ id, status: { status: newStatus } }));
+      toast('Status updated successfully')
     } catch (error) {
       console.log('Error at status change :',error)
     }

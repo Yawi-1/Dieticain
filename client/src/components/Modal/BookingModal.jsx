@@ -35,7 +35,7 @@ const BookingModal = ({ isOpen, onClose, service }) => {
 
     try {
       const { data } = await axios.post(
-        "https://dieticain.onrender.com/api/payment/razorpay/create",
+        "http://localhost:8000/api/payment/razorpay/create",
         { amount: service.price }
       );
 
@@ -53,7 +53,7 @@ const BookingModal = ({ isOpen, onClose, service }) => {
           setIsVerifying(true);
           try {
             const verifyRes = await axios.post(
-              "https://dieticain.onrender.com/api/payment/razorpay/verify",
+              "http://localhost:8000/api/payment/razorpay/verify",
               {
                 razorpay_payment_id: response.razorpay_payment_id,
                 razorpay_order_id: response.razorpay_order_id,

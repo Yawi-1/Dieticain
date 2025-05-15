@@ -1,12 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_URL = "https://dieticain.onrender.com";
+const API_URL = "http://localhost:8000";
 
 export const createContact = createAsyncThunk("contact/add", async (data) => {
   try {
     const res = await axios.post(`${API_URL}/api/contact`, data);
-    console.log("Backend response:", res.data.data);
     return res.data.data;
   } catch (error) {
     console.log("Error creating contact:", error);
@@ -23,7 +22,7 @@ export const getContacts = createAsyncThunk("contact/get", async () => {
     throw error;
   }
 });
-export const updateContacts = createAsyncThunk("contact/update", async (id,status) => {
+export const updateContacts = createAsyncThunk("contact/update", async ({id,status}) => {
   try {
     const res = await axios.put(`${API_URL}/api/contact/${id}`,status);
     console.log("Update backend response :", res.data);

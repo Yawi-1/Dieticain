@@ -7,12 +7,10 @@ export const login = createAsyncThunk(
   async ({ email, password }, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "https://dieticain.onrender.com/api/auth/login",
+        "http://localhost:8000/api/auth/login",
         { email, password },
         { withCredentials: true }
       );
-      // const token = response.data.token;
-      // document.cookie = `authToken=${token}; path=/; max-age=3600; secure; SameSite=None`;
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Login failed");
@@ -25,7 +23,7 @@ export const verifyAuth = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        "https://dieticain.onrender.com/api/auth/verify",
+        "http://localhost:8000/api/auth/verify",
         { withCredentials: true }
       );
       return response.data.user;
@@ -40,7 +38,7 @@ export const logout = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       await axios.post(
-        "https://dieticain.onrender.com/api/auth/logout",
+        "http://localhost:8000/api/auth/logout",
         {},
         { withCredentials: true }
       );
