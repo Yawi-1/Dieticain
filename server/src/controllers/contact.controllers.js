@@ -28,7 +28,6 @@ const getContacts = async (req, res) => {
 const updateContact = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(req.body)
     const updatedContact = await Contact.findByIdAndUpdate(id, req.body, {
       new: true,
       runValidators: true, 
