@@ -7,7 +7,7 @@ export const login = createAsyncThunk(
   async ({ email, password }, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "https://dieticain.onrender.com/api/auth/login",
+        "https://dieticain.onrender.com//api/auth/login",
         { email, password },
         { withCredentials: true }
       );
@@ -23,7 +23,7 @@ export const verifyAuth = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        "https://dieticain.onrender.com/api/auth/verify",
+        "https://dieticain.onrender.com//api/auth/verify",
         { withCredentials: true }
       );
       return response.data.user;
@@ -38,7 +38,7 @@ export const logout = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       await axios.post(
-        "https://dieticain.onrender.com/api/auth/logout",
+        "https://dieticain.onrender.com//api/auth/logout",
         {},
         { withCredentials: true }
       );
@@ -48,6 +48,39 @@ export const logout = createAsyncThunk(
     }
   }
 );
+
+export const forgotpassword = createAsyncThunk(
+  'auth/forgot-password',
+  async(email)=>{
+    try {
+      const res = await axios.post('https://dieticain.onrender.com//api/auth/forgot-password',{email});
+      const data = res.data;
+      console.log('FP:', data)
+    } catch (error) {
+       return rejectWithValue(error.response?.data || "Forgot password  failed");
+    }
+  }
+)
+
+export const verifyOtp = createAsyncThunk(
+  'auth/verifyOtp',
+  async ({ email, otp, password }, { rejectWithValue }) => {
+    try {
+      const res = await axios.post('https://dieticain.onrender.com//api/auth/update-password', {
+        email,
+        otp,
+        password
+      });
+      const data = res.data;
+      console.log('VERIFY OTP:', data);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Password reset failed");
+    }
+  }
+);
+
+
 
 const authSlice = createSlice({
   name: "auth",
@@ -87,7 +120,25 @@ const authSlice = createSlice({
       })
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
-      });
+      })
+      .addCase(forgotpassword.pending,(state)=>{
+        state.loading = true;
+      })
+      .addCase(forgotpassword.rejected, (state) => {
+        state.loading = false;
+      })
+      .addCase(forgotpassword.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(verifyOtp.pending,(state)=>{
+        state.loading = true;
+      })
+      .addCase(verifyOtp.rejected, (state) => {
+        state.loading = false;
+      })
+      .addCase(verifyOtp.fulfilled, (state) => {
+        state.loading = false;
+      })
   },
 });
 

@@ -23,7 +23,7 @@ const Success = () => {
     } else {
       axios
         .get(
-          `https://dieticain.onrender.com/api/payment/razorpay/success?session_id=${sessionId}`
+          `https://dieticain.onrender.com//api/payment/razorpay/success?session_id=${sessionId}`
         )
         .then((res) => {
           setOrder(res.data.booking);

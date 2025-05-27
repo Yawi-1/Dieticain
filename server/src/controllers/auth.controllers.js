@@ -102,5 +102,49 @@ const logout = async (req, res) => {
   res.json({ message: "Logged out" });
 };
 
+// Forgot password function
+const forgotpassword = async(req,res)=>{
+  try {
+    const { email } = req.body;
+    console.log('email:',email)
+    const user =await User.findOne({email});
+    console.log((user))
+    if(!user){
+      return res.status(400).json({message:"Invalid email address"})
+    }
+    const otp = Math.floor(Math.random() * 1000 + 9000).toString();
 
-module.exports = { signup, login, verify, logout };
+    user.otp = otp;
+    user.otp_expires = Date.now() + 360000; 
+    await user.save();
+    await sendMail(email,'Reset Password',`Your otp for password reset : ${otp} <hr> By Nutricare@developers`);
+   res.status(200).json({message:`Otp sent to ${email}`})
+  } catch (error) {
+    res.status(500).json({message:error.message || "Server Error"})
+    
+  }
+}
+
+//Verify Otp
+const verifyOtpAndUpdatePassword = async(req,res)=>{
+  try {
+    const {email,otp,password} = req.body;
+     const user =await User.findOne({email});
+    if(!user){
+      return res.status(400).json({message:"Invalid email address"})
+    }
+    if(user.otp !== otp || user.otp_expires < Date.now()){
+      return res.status(400).json({message:"OTP is incorrect or has expired"});
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    user.password = hashedPassword;
+    user.otp = null;
+    user.otp_expires = null;
+    await user.save();
+    res.status(201).json({message:"Password Updated Successfully..."})
+  } catch (error) {
+     res.status(500).json({message:error.message || "Server Error"})
+  }
+}
+
+module.exports = { signup, login, verify, logout,forgotpassword,verifyOtpAndUpdatePassword };
