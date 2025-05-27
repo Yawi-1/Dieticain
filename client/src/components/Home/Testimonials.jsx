@@ -50,7 +50,7 @@ const Testimonials = () => {
   }, []);
 
   return (
-    <div className="mx-auto text-center max-w-6xl px-4 sm:px-6 lg:px-8 py-12">
+    <div data-aos='zoom-in' className="mx-auto text-center max-w-6xl px-4 sm:px-6 lg:px-8 py-12">
       <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6 md:mb-8">
         What Our Clients Say
       </h2>

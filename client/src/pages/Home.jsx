@@ -33,7 +33,7 @@ const Homepage = () => {
     <Layout>
       {/* Hero Section */}
       <div
-        className="relative min-h-screen bg-cover bg-center bg-fixed flex items-center justify-center text-white"
+        className="relative md:min-h-screen h-[36rem] bg-cover bg-center bg-fixed flex items-center justify-center text-white"
         style={{
           backgroundImage: `url(${HeroImage})`,
           backgroundSize: "cover",

@@ -42,7 +42,6 @@ body {
 
   .main-text{
     animation: textEffect 1s linear;
-    
     transition: all;
   }
 
@@ -56,7 +55,7 @@ body {
       opacity: 1;
     }
   }
-  .slide {
+  /* .slide {
     animation: appear linear;
     animation-timeline: view();
     animation-range: entry 0% cover 40%;
@@ -69,7 +68,7 @@ body {
       transform: scale(1);
       
     }
-  }
+  } */
 .navBtn:hover{
   color: white;
 }
@@ -88,4 +87,18 @@ body {
   }
  .navBtn:hover::before{
       width: 100%; 
+  }
+
+  .display-chat{
+     animation: show 0.5s ease-in-out;
+     transition: all 0.5s ease-in-out;
+  }
+
+  @keyframes show {
+    from{
+      transform: scale(0.6);
+    }
+    to{
+      transform: scale(1);
+    }
   }

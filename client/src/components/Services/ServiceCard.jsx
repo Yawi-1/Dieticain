@@ -4,7 +4,9 @@ import BookingModal from "../Modal/BookingModal";
 const ServiceCard = ({ service }) => {
   const[isShow, setShow] = useState(false);
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300 border border-gray-200">
+    <>
+  
+    <div data-aos='zoom-in-up' className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300 border border-gray-200">
       <h3 className="text-2xl font-semibold text-gray-800 mb-4">
         {service.title}
       </h3>
@@ -27,12 +29,13 @@ const ServiceCard = ({ service }) => {
       >
         Know More
       </Link>
-      <BookingModal
+    </div>
+     <BookingModal
         isOpen={isShow}
         onClose={() => setShow(false)}
         service={service}
       />
-    </div>
+      </>
   );
 };
 

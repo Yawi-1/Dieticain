@@ -8,6 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 import Loader from "./components/Modal/Loader";
 import BMICalculator from "./components/BmiCalculator";
 import { addContactFromSocket } from "./Redux/contactSlice";
+import Chatbot from "./components/Chatbot/Chatbot";
 
 // Home is imported normally to show instantly
 import Home from "./pages/Home";
@@ -82,6 +83,7 @@ const App = () => {
           element={
             <Suspense fallback={<Loader />}>
               <Routes>
+               
                 <Route path="/about" element={<About />} />
                 <Route path="/services" element={<Services />} />
                 <Route path="/services/:id" element={<ServiceDetail />} />
@@ -89,7 +91,7 @@ const App = () => {
                 <Route path="/blog/:id" element={<BlogDetail />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/success" element={<Success />} />
-                <Route path="/cancel" element={<Cancel />} />
+                <Route path="/cance l" element={<Cancel />} />
                 <Route path="/bmi" element={<BMICalculator />} />
                 <Route
                   path="/login"
@@ -107,7 +109,7 @@ const App = () => {
           }
         />
       </Routes>
-
+< Chatbot />
       <ToastContainer theme="dark" position="top-center" />
     </>
   );

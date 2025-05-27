@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const HomeServiceCard = ({ title, description, image,id }) => (
-  <div className="flex flex-col h-full shadow-md rounded-md slide">
+  <div data-aos='zoom-in-up' className="flex flex-col transition-all h-full shadow-md rounded-md slide">
   <div className="overflow-hidden">
     <img 
       src={image} 

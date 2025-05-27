@@ -6,6 +6,7 @@ import Bookings from "./Booking";
 import ServiceTable from './ServiceTable'
 import BlogTable from './BlogTable'
 import Contact from './Contact'
+ 
 
 
 const AdminRoutes = () => {
