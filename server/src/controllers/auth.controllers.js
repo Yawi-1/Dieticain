@@ -2,6 +2,7 @@ const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const sendMail = require("../utils/sentMail.js");
+const uploadOnCloudinary = require('../utils/cloudinary.js')
 
 // Function to generate a token
 const generateToken = (id) =>
@@ -147,4 +148,30 @@ const verifyOtpAndUpdatePassword = async(req,res)=>{
   }
 }
 
-module.exports = { signup, login, verify, logout,forgotpassword,verifyOtpAndUpdatePassword };
+const updateUser = async(req,res)=>{
+  try {
+    const {name,email} = req.body;
+    const file = req.file;
+    if(!name){
+      return res.status(400).json({message:"Name is required."})
+    }
+    if(!email){
+      return res.status(400).json({message:"Email is required."})
+    }
+    const user = await User.findOne({email});
+    if(!user){
+      return res.status(400).json({message:'User not found'})
+    }
+     if (file) {
+      const imageUrl = await uploadOnCloudinary(file);
+      user.profile = imageUrl;
+    }
+    user.name = name;
+    await user.save()
+    res.status(201).json({message:"Profile Successfully Updated",data:user})
+  } catch (error) {
+     res.status(500).json({message:error.message || "Server Error"})
+  }
+}
+
+module.exports = { signup, login, verify, logout,forgotpassword,verifyOtpAndUpdatePassword,updateUser };

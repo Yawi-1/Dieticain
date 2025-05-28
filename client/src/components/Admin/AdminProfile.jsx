@@ -1,46 +1,87 @@
-import React, { useRef, useState } from 'react';
-import {useSelector} from 'react-redux'
+import React, { useEffect, useRef, useState } from 'react';
+import { useSelector,useDispatch } from 'react-redux'
 import { FaPen } from "react-icons/fa";
+import {updateUser} from '../../Redux/authSlice'
+import { verifyAuth } from '../../Redux/authSlice';
+import {toast} from 'react-toastify'
 
 const AdminProfile = () => {
-  
-  const {user} = useSelector(state=>state.auth);
-  const [admin, setAdmin] = useState(user);
-  const [isUpdate,setIsUpdate] = useState(false);
-  
-  const inputRef = useRef(null);
 
+  const { user,loading } = useSelector(state => state.auth);
+const [admin, setAdmin] = useState({ name: '', email: '' ,profile:''});
+let username;
+
+useEffect(() => {
+  if (user) {
+    setAdmin({
+      name: user.name || '',
+      email: user.email || '',
+      profile:user.profile || ''
+    });
+    username = user.name;
+  }
+}, [user]);
+  const [isUpdate, setIsUpdate] = useState(false);
+  const [image, setImage] = useState(null);
+
+  const inputRef = useRef(null);
+ const dispatch = useDispatch();
 
   const handleChange = (e) => {
-    setAdmin({ ...admin, [e.target.name]: e.target.value });
+    if (e.target.type === 'file') {
+      const file = e.target.files[0];
+      setAdmin({ ...admin, [e.target.name]: file });
+      const imageUrl = URL.createObjectURL(file);
+      setImage(imageUrl)
+    } else {
+      setAdmin({ ...admin, [e.target.name]: e.target.value });
+    }
   };
-  const handleUpdate = ()=>{
-     setIsUpdate(true);
-     inputRef.current.focus();
+
+  const handleUpdate = () => {
+    setIsUpdate(true);
+    inputRef.current.focus();
   }
 
   const handleSave = () => {
-    console.log('Updated admin profile:', admin);
-    // Add API call here if needed
-  };
+  const formData = new FormData();
+  formData.append('name', admin.name);
+  formData.append('email', admin.email);
+  if(image){
+    formData.append('profile', admin.profile);
+  }
+  
+  dispatch(updateUser(formData))
+    .unwrap()
+    .then(() => {
+      setIsUpdate(false); 
+      toast.success('Profile updated Successfully...')
+    })
+    .catch((error) => {
+      console.error('Update failed:', error);
+    });
+};
+
 
   return (
     <div className="max-w-3xl mx-auto mt-10 bg-white shadow-lg rounded-2xl p-6">
       <h2 className="text-2xl font-semibold text-gray-800 mb-6">Admin Profile</h2>
-      
+
       <div className="flex items-center gap-6 relative">
         {
 
-       isUpdate &&  <label htmlFor="image" className='absolute left-20 top-10 cursor-pointer w-6 h-6 rounded-full flex items-center justify-center bg-white'><FaPen size={16}/><input type="file" className='hidden'  id="image"/></label>
+          isUpdate && <label htmlFor="image" className='absolute left-20 top-10 cursor-pointer w-6 h-6 rounded-full flex items-center justify-center bg-white'>
+            <FaPen size={16} />
+            <input type="file" className='hidden' name="profile" onChange={handleChange} id="image" /></label>
         }
-         
+
         <img
-          src={"https://cdn-icons-png.flaticon.com/512/3135/3135715.png"}
+          src={image || admin.profile}
           alt="Admin Avatar"
           className="w-24 h-24 rounded-full object-cover border-2 border-primary"
         />
         <div>
-          <h3 className="text-xl font-medium">{admin.name}</h3>
+          <h3 className="text-xl font-medium">{user?.name}</h3>
           <p className="text-gray-600">Admin</p>
         </div>
       </div>
@@ -71,10 +112,11 @@ const AdminProfile = () => {
           />
         </div>
         <button
+        disabled={loading}
           onClick={!isUpdate ? handleUpdate : handleSave}
-          className= {`mt-4 ${isUpdate ? 'bg-green-600' :'bg-blue-600'} text-white px-5 py-2 rounded-lg hover:bg-green-700 transition`}
+          className={`mt-4 ${isUpdate ? 'bg-green-600' : 'bg-blue-600'} text-white px-5 py-2 rounded-lg hover:bg-green-700 transition`}
         >
-          {isUpdate ? 'Save Changes' : 'Edit Profile'}
+          {isUpdate ? (loading ? 'Loading....' : 'Save Changes') : 'Edit Profile'}
         </button>
       </div>
     </div>

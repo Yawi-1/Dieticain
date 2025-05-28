@@ -3,7 +3,7 @@ const { addService,getServices,getServiceById,deleteService,updateService, bookS
 const uploadSingleImage = require('../middlewares/upload.js')
 const router = express.Router();
 
- router.post('/',uploadSingleImage,addService);
+ router.post('/',uploadSingleImage('image'),addService);
  router.post('/book',bookService)
  router.get('/',getServices);
  router.get('/:id',getServiceById);

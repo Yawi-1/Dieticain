@@ -7,7 +7,7 @@ export const login = createAsyncThunk(
   async ({ email, password }, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/auth/login",
+        "https://dieticain.onrender.com/api/auth/login",
         { email, password },
         { withCredentials: true }
       );
@@ -23,7 +23,7 @@ export const verifyAuth = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/auth/verify",
+        "https://dieticain.onrender.com/api/auth/verify",
         { withCredentials: true }
       );
       return response.data.user;
@@ -38,7 +38,7 @@ export const logout = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       await axios.post(
-        "http://localhost:8000/api/auth/logout",
+        "https://dieticain.onrender.com/api/auth/logout",
         {},
         { withCredentials: true }
       );
@@ -53,9 +53,8 @@ export const forgotpassword = createAsyncThunk(
   'auth/forgot-password',
   async(email)=>{
     try {
-      const res = await axios.post('http://localhost:8000/api/auth/forgot-password',{email});
+      const res = await axios.post('https://dieticain.onrender.com/api/auth/forgot-password',{email});
       const data = res.data;
-      console.log('FP:', data)
     } catch (error) {
        return rejectWithValue(error.response?.data || "Forgot password  failed");
     }
@@ -66,13 +65,12 @@ export const verifyOtp = createAsyncThunk(
   'auth/verifyOtp',
   async ({ email, otp, password }, { rejectWithValue }) => {
     try {
-      const res = await axios.post('http://localhost:8000/api/auth/update-password', {
+      const res = await axios.post('https://dieticain.onrender.com/api/auth/update-password', {
         email,
         otp,
         password
       });
       const data = res.data;
-      console.log('VERIFY OTP:', data);
       return data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Password reset failed");
@@ -80,7 +78,22 @@ export const verifyOtp = createAsyncThunk(
   }
 );
 
-
+export const updateUser = createAsyncThunk('auth/update-user',
+  async (formData, { rejectWithValue }) => { 
+    try {
+      const res = await axios.post(
+        'https://dieticain.onrender.com/api/auth/update-profile',
+        formData,
+        { 
+          withCredentials: true 
+        }
+      );
+      return res.data.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "User updatation failed");
+    }
+  }
+);
 
 const authSlice = createSlice({ 
   name: "auth",
@@ -138,6 +151,17 @@ const authSlice = createSlice({
       })
       .addCase(verifyOtp.fulfilled, (state) => {
         state.loading = false;
+      })
+      .addCase(updateUser.pending,(state)=>{
+        state.loading = true;
+      })
+      .addCase(updateUser.rejected, (state,action) => {
+        state.loading = false;
+        state.error = action?.payload?.message || "User updation failed"
+      })
+      .addCase(updateUser.fulfilled, (state,action) => {
+        state.loading = false;
+        state.user = action.payload
       })
   },
 });
