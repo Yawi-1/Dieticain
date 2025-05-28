@@ -17,6 +17,9 @@ export default function LoginForm({ dispatch, loading, error, setStep, onSuccess
   return (
     <div className="bg-white p-8 rounded-2xl shadow-xl space-y-6">
       <h2 className="text-2xl font-bold text-center">Welcome Back</h2>
+       <p className="text-center text-sm text-gray-500">
+        Sign in using email and password
+      </p>
       {error && (
         <div className="bg-red-100 p-3 rounded text-sm text-red-700">
           {error.message}

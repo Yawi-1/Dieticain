@@ -36,10 +36,9 @@ export default function Dashboard() {
             <BellIcon className="w-6 h-6 text-gray-600" />
             <span className="absolute top-0 right-0 text-red-400">{contacts.filter((item)=> item.status === 'pending').length}</span>
           </Link>
-          <button className="p-2 rounded-lg hover:bg-gray-100">
+          <Link to='/admin/profile' className="p-2 rounded-lg hover:bg-gray-100">
             <UserIcon className="w-6 h-6 text-gray-600" />
-            <dialog>Hello</dialog>
-          </button>
+          </Link>
         </div>
       </div>
 

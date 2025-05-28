@@ -7,11 +7,11 @@ export const login = createAsyncThunk(
   async ({ email, password }, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "https://dieticain.onrender.com//api/auth/login",
+        "http://localhost:8000/api/auth/login",
         { email, password },
         { withCredentials: true }
       );
-      return response.data;
+      return response.data.user;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Login failed");
     }
@@ -23,7 +23,7 @@ export const verifyAuth = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        "https://dieticain.onrender.com//api/auth/verify",
+        "http://localhost:8000/api/auth/verify",
         { withCredentials: true }
       );
       return response.data.user;
@@ -38,7 +38,7 @@ export const logout = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       await axios.post(
-        "https://dieticain.onrender.com//api/auth/logout",
+        "http://localhost:8000/api/auth/logout",
         {},
         { withCredentials: true }
       );
@@ -53,7 +53,7 @@ export const forgotpassword = createAsyncThunk(
   'auth/forgot-password',
   async(email)=>{
     try {
-      const res = await axios.post('https://dieticain.onrender.com//api/auth/forgot-password',{email});
+      const res = await axios.post('http://localhost:8000/api/auth/forgot-password',{email});
       const data = res.data;
       console.log('FP:', data)
     } catch (error) {
@@ -66,7 +66,7 @@ export const verifyOtp = createAsyncThunk(
   'auth/verifyOtp',
   async ({ email, otp, password }, { rejectWithValue }) => {
     try {
-      const res = await axios.post('https://dieticain.onrender.com//api/auth/update-password', {
+      const res = await axios.post('http://localhost:8000/api/auth/update-password', {
         email,
         otp,
         password
@@ -82,7 +82,7 @@ export const verifyOtp = createAsyncThunk(
 
 
 
-const authSlice = createSlice({
+const authSlice = createSlice({ 
   name: "auth",
   initialState: {
     user: null,

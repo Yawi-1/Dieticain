@@ -20,7 +20,12 @@ const userSchema = new Schema(
     },
     otp_expires:{
       type:Date,
-    }
+    },
+    profile: {
+  type: String,
+  default: "https://via.placeholder.com/150" 
+}
+
   },
   {
     timestamps: true,

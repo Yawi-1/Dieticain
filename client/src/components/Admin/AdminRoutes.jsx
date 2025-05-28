@@ -6,6 +6,7 @@ import Bookings from "./Booking";
 import ServiceTable from './ServiceTable'
 import BlogTable from './BlogTable'
 import Contact from './Contact'
+import AdminProfile from "./AdminProfile";
  
 
 
@@ -18,6 +19,7 @@ const AdminRoutes = () => {
         <Route path="/services" element={<ServiceTable />} />
         <Route path="/blogs" element={<BlogTable />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/profile" element={<AdminProfile />} />
       </Routes>
     </AdminLayout>
   );

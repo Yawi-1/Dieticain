@@ -9,6 +9,7 @@ import Loader from "./components/Modal/Loader";
 import BMICalculator from "./components/BmiCalculator";
 import { addContactFromSocket } from "./Redux/contactSlice";
 import Chatbot from "./components/Chatbot/Chatbot";
+import { useLocation } from "react-router-dom";
 
 // Home is imported normally to show instantly
 import Home from "./pages/Home";
@@ -32,6 +33,7 @@ const AdminRoutes = React.lazy(() => import("./components/Admin/AdminRoutes"));
 const App = () => {
   const dispatch = useDispatch();
   const { user, isInitialized } = useSelector((state) => state.auth);
+  const location  = useLocation();
 
   useEffect(() => {
     dispatch(verifyAuth());
@@ -109,7 +111,7 @@ const App = () => {
           }
         />
       </Routes>
-< Chatbot />
+       {!location.pathname.startsWith('/admin') && < Chatbot />}
       <ToastContainer theme="dark" position="top-center" />
     </>
   );

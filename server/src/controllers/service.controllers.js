@@ -22,7 +22,7 @@ const addService = async (req, res) => {
     if (!file) {
       return res.status(400).json({ message: "Please upload a file" });
     }
-    const imageUrl = await uploadOnCloudinary(file);
+    const imageUrl = await uploadOnCloudinary(file); 
     const service = await Services.create({
       title,
       description,
@@ -78,9 +78,8 @@ const deleteService = async (req, res) => {
     if (!service) {
       return res.status(404).json({ message: "Service Not Found" });
     }
-    res
-      .status(200)
-      .json({ message: "Service Deleted Successfully...", data: service });
+  
+     
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
