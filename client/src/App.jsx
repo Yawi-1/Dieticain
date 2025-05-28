@@ -23,7 +23,7 @@ const ServiceDetail = React.lazy(() =>
 const Blog = React.lazy(() => import("./pages/Blog"));
 const BlogDetail = React.lazy(() => import("./pages/BlogDetail"));
 const Contact = React.lazy(() => import("./pages/Contact"));
-const Login = React.lazy(() => import("./pages/Login"));
+const Login = React.lazy(() => import("./pages/Login.jsx"));
 const Success = React.lazy(() => import("./pages/Success"));
 const Cancel = React.lazy(() => import("./pages/Cancel"));
 const AdminRoutes = React.lazy(() => import("./components/Admin/AdminRoutes"));
