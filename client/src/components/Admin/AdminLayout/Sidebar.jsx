@@ -26,7 +26,7 @@ const Sidebar = ({ isOpen,setIsSidebarOpen }) => {
 
   return (
     <div
-      className={`fixed  ${!isOpen && '-left-16'} md:left-0 md:relative h-full bg-white shadow-md transition-all duration-300 ${
+      className={`fixed  ${!isOpen && '-left-16'} md:left-0 md:relative h-full bg-white shadow-md transition-all duration-300 z-20 ${
         isOpen ? "w-64" : "w-16"
       }`}
     >

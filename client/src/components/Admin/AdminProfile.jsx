@@ -82,7 +82,7 @@ useEffect(() => {
         />
         <div>
           <h3 className="text-xl font-medium">{user?.name}</h3>
-          <p className="text-gray-600">Admin</p>
+          <p className="text-gray-600">Role : Admin</p>
         </div>
       </div>
 

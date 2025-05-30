@@ -84,7 +84,7 @@ const Chatbot = () => {
         onClick={toggleChatbot}
         className="fixed z-50 bottom-6 right-6 cursor-pointer group transition-all duration-300 hover:rotate-12"
       >
-        <div className="relative p-4 bg-blue-600 rounded-full shadow-xl hover:bg-blue-700 animate-bounce">
+        <div className="relative p-4 bg-blue-600 rounded-full shadow-xl hover:bg-blue-700 ">
           <LuMessageSquare className="w-8 h-8 text-white" />
           <span className="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
             1

@@ -14,7 +14,7 @@ const AdminLayout = ({ children }) => {
       <Sidebar isOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} toggleSidebar={toggleSidebar} />
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-w-0">
         <TopBar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
         <main className="mt-16 p-6 overflow-auto">{children}</main>
       </div>
