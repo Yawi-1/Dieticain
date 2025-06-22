@@ -10,7 +10,8 @@ const store = configureStore({
         auth:authReducer,
         blog:blogReducer,
         booking:bookingReducer,
-        contact:contactReducer
+        contact:contactReducer,
+     
     }
 });
 

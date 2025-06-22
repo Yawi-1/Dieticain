@@ -5,21 +5,22 @@ const router = express.Router();
 
 // Configure Nodemailer Transporter
 const transporter = nodemailer.createTransport({
-    service:'gmail',
+  service: 'gmail',
   auth: {
-    user: 'mudasirjavidmalik1@gmail.com', 
-    pass: 'rmin naen pmqw spyc', 
+    user: 'mudasirjavidmalik1@gmail.com',
+    pass: 'rmin naen pmqw spyc',
   },
 });
 
 // Email Sending Function
-const sendEmail = async (to, subject, text) => {
+const sendEmail = async (to, subject, text, html) => {
   try {
     const info = await transporter.sendMail({
-      from: `Nutri Care `,
+      from: 'Nutri Care <your-email@example.com>',
       to,
       subject,
       text,
+      html,
     });
     return info;
   } catch (error) {
@@ -27,6 +28,7 @@ const sendEmail = async (to, subject, text) => {
     throw error;
   }
 };
+
 
 
 module.exports = sendEmail;

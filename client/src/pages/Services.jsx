@@ -85,7 +85,7 @@ const Services = () => {
           <div className="flex gap-6 flex-col md:flex-row">
             {/* Filter Sidebar */}
             <div 
-              className={`bg-white rounded-xl p-6 shadow-md border border-gray-200 md:w-1/4 ${
+              className={`bg-white rounded-xl p-6  shadow-md border border-gray-200 md:w-1/4 ${
                 showFilters ? "block" : "hidden md:block"
               }`}
             >

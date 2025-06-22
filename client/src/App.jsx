@@ -1,59 +1,52 @@
 import React, { useEffect, Suspense } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { verifyAuth } from "./Redux/authSlice";
 import socket from "./utils/socket";
 import { addServiceFromSocket } from "./Redux/serviceSlice";
+import { addContactFromSocket } from "./Redux/contactSlice";
 import { ToastContainer, toast } from "react-toastify";
 import Loader from "./components/Modal/Loader";
 import BMICalculator from "./components/BmiCalculator";
-import { addContactFromSocket } from "./Redux/contactSlice";
-import Chatbot from "./components/Chatbot/Chatbot";
-import { useLocation } from "react-router-dom";
 
-// Home is imported normally to show instantly
+// Eagerly loaded critical pages
 import Home from "./pages/Home";
+import About from "./pages/About";
+import Services from "./pages/Services";
+import Contact from "./pages/Contact";
 
-// Lazy-loaded pages
-const About = React.lazy(() => import("./pages/About"));
-const Services = React.lazy(() => import("./pages/Services"));
+// Lazy-loaded non-critical pages
 const ServiceDetail = React.lazy(() =>
   import("./components/Services/ServiceDetail")
 );
-
 const Blog = React.lazy(() => import("./pages/Blog"));
 const BlogDetail = React.lazy(() => import("./pages/BlogDetail"));
-const Contact = React.lazy(() => import("./pages/Contact"));
-const Login = React.lazy(() => import("./pages/Login.jsx"));
+const Login = React.lazy(() => import("./pages/Login"));
 const Success = React.lazy(() => import("./pages/Success"));
 const Cancel = React.lazy(() => import("./pages/Cancel"));
 const AdminRoutes = React.lazy(() => import("./components/Admin/AdminRoutes"));
-
+const Chatbot = React.lazy(() => import("./components/Chatbot/Chatbot"));
 
 const App = () => {
   const dispatch = useDispatch();
-  const { user, isInitialized } = useSelector((state) => state.auth);
-  const location  = useLocation();
+  const { user } = useSelector((state) => state.auth);
+  const location = useLocation();
 
   useEffect(() => {
     dispatch(verifyAuth());
-  }, [dispatch]);
 
-  useEffect(() => {
     const handleConnect = () => {
       console.log("🟢 Connected to Socket.IO server:", socket.id);
     };
-
     const handleDisconnect = () => {
       console.log("🔴 Disconnected from Socket.IO server");
     };
-
     const handleNewService = async (newService) => {
       await dispatch(addServiceFromSocket(newService));
-      toast.success("New Service added..");
+      toast.success("New Service added.");
     };
     const handleContact = async (newContact) => {
-      console.log("Socket Contact : ", newContact);
+      console.log("Socket Contact:", newContact);
       await dispatch(addContactFromSocket(newContact));
       toast.success("New Contact added.");
     };
@@ -71,47 +64,83 @@ const App = () => {
     };
   }, [dispatch]);
 
-  if (!isInitialized) return <Loader />;
-
   return (
     <>
       <Routes>
-        {/* Home loads instantly */}
+        {/* Eager pages */}
         <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/bmi" element={<BMICalculator />} />
 
-        {/* Suspense for lazy-loaded routes */}
+        {/* Lazy-loaded pages with Suspense */}
         <Route
-          path="*"
+          path="/services/:id"
           element={
             <Suspense fallback={<Loader />}>
-              <Routes>
-               
-                <Route path="/about" element={<About />} />
-                <Route path="/services" element={<Services />} />
-                <Route path="/services/:id" element={<ServiceDetail />} />
-                <Route path="/blog" element={<Blog />} />
-                <Route path="/blog/:id" element={<BlogDetail />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/success" element={<Success />} />
-                <Route path="/cance l" element={<Cancel />} />
-                <Route path="/bmi" element={<BMICalculator />} />
-                <Route
-                  path="/login"
-                  element={user ? <Navigate to="/admin" replace /> : <Login />}
-                />
-                <Route
-                  path="/admin/*"
-                  element={
-                    user ? <AdminRoutes /> : <Navigate to="/login" replace />
-                  }
-                />
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
+              <ServiceDetail />
             </Suspense>
           }
         />
+        <Route
+          path="/blog"
+          element={
+            <Suspense fallback={<Loader />}>
+              <Blog />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/blog/:id"
+          element={
+            <Suspense fallback={<Loader />}>
+              <BlogDetail />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/success"
+          element={
+            <Suspense fallback={<Loader />}>
+              <Success />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/cancel"
+          element={
+            <Suspense fallback={<Loader />}>
+              <Cancel />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <Suspense fallback={<Loader />}>
+              {user ? <Navigate to="/admin" replace /> : <Login />}
+            </Suspense>
+          }
+        />
+        <Route
+          path="/admin/*"
+          element={
+            <Suspense fallback={<Loader />}>
+              {user ? <AdminRoutes /> : <Navigate to="/login" replace />}
+            </Suspense>
+          }
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-       {!location.pathname.startsWith('/admin') && < Chatbot />}
+
+      {/* Chatbot visible on public pages only */}
+      {!location.pathname.startsWith("/admin") && (
+        <Suspense fallback={null}>
+          <Chatbot />
+        </Suspense>
+      )}
+
       <ToastContainer theme="dark" position="top-center" />
     </>
   );

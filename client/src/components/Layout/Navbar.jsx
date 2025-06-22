@@ -6,6 +6,8 @@ import { useLocation } from 'react-router-dom';
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
+  
+
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Services', path: '/services' },
@@ -17,13 +19,12 @@ function Navbar() {
   const location = useLocation();
 
   return (
-    <nav className="z-50 bg-white shadow-md sticky top-0 w-full">
+    <nav className={`z-50 bg-white  shadow-md sticky top-0 w-full`}>
       <div className="max-w-6xl mx-auto px-6">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-16 ">
           <Link to="/" className="text-2xl shadow px-4 py-2 rounded font-bold text-blue-600">
             NutriCare
           </Link>
-          
           <div className="hidden md:flex items-center space-x-6">
             {navLinks.map((link) => (
               <Link key={link.name} to={link.path} className={`${location.pathname === link.path ? 'text-blue-600 font-semibold' : 'text-gray-600'}  hover:text-blue-600 transition`}>

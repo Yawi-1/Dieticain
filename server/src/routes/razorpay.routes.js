@@ -16,7 +16,7 @@ router.post("/create", async (req, res) => {
   try {
     const { amount } = req.body;
     const options = {
-      amount: amount * 100, 
+      amount: amount * 100,
       currency: "INR",
       receipt: `receipt_${Date.now()}`,
     };
@@ -68,11 +68,29 @@ router.post("/verify", async (req, res) => {
       paymentStatus: "Paid",
     });
 
-    await booking.save();
+    const product = await booking.save();
 
     // Send confirmation email
-    const emailContent = `Hey ${data.email} \n\n Your booking has been confirmed.\n\nPayment ID: ${razorpay_payment_id}`;
-    await sendEmail(data.email, "Booking Confirmation", emailContent);
+    const emailContent = `
+Dear ${data.name || 'Customer'},
+
+We’re pleased to inform you that your booking with Nutri Care has been successfully confirmed.
+
+Here are your booking details:
+
+- Registered Email: ${data.email}
+- Payment ID: ${razorpay_payment_id}
+
+You can view your confirmation and booking details by visiting the link below:
+http://localhost:5173/success?session_id=${product._id}
+
+Thank you for choosing Nutri Care. We look forward to serving you!
+
+Warm regards,  
+Team Nutri Care
+`;
+
+    await sendEmail(data.email, "Booking Confirmation - Nutri Care", emailContent);
 
     // ✅ Respond with booking ID (used as sessionId)
     res.status(201).json({
@@ -93,7 +111,7 @@ router.post("/verify", async (req, res) => {
 router.get('/success', async (req, res) => {
   const { session_id } = req.query;
   try {
-    const booking = await Booking.findById(session_id).populate('serviceId','title price image description duration');
+    const booking = await Booking.findById(session_id).populate('serviceId', 'title price image description duration');
     if (!booking) {
       return res.status(404).json({ success: false, message: 'Booking not found' });
     }
