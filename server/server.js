@@ -17,14 +17,14 @@ const contactRouter = require('./src/routes/contact.routes.js')
 const app = express();
 
 // CORS configuration
-// let corsOptions = {
-//   origin: [
-//     "http://localhost:5173",
-//     "https://nutricare11.netlify.app",
-//   ],
-//   methods: "GET,POST,PUT,DELETE",
-//   credentials: true,
-// };
+let corsOptions = {
+  origin: [
+    "http://localhost:5173",
+    "https://nutricare11.netlify.app",
+  ],
+  methods: "GET,POST,PUT,DELETE",
+  credentials: true,
+};
 
 // Middlewares
 app.use(express.json({ limit: "10mb" }));
