@@ -10,13 +10,13 @@ const testimonials = [
   {
     name: "Lovish Garg",
     feedback: "I struggled with weight loss for years.",
-    image: "https://randomuser.me/api/portraits/women/44.jpg",
+    image: "https://randomuser.me/api/portraits/men/42.jpg",
     rating: 4,
   },
   {
     name: "Mudasir Javid",
     feedback: "Diet plan made it so easy and effective!",
-    image: "https://randomuser.me/api/portraits/women/44.jpg",
+    image: "https://randomuser.me/api/portraits/men/44.jpg",
     rating: 5,
   },
 ];

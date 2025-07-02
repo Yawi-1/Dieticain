@@ -82,7 +82,7 @@ Here are your booking details:
 - Payment ID: ${razorpay_payment_id}
 
 You can view your confirmation and booking details by visiting the link below:
-http://localhost:5173/success?session_id=${product._id}
+https://nutricare11.netlify.app/success?session_id=${product._id}
 
 Thank you for choosing Nutri Care. We look forward to serving you!
 
