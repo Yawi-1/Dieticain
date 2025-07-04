@@ -24,6 +24,19 @@ Nutricare is a full-stack web application tailored for professional dieticians t
 | Tailwind CSS  | Express.js        | Mongoose       | JWT, Socket.io, Redux Toolkit |
 | Framer Motion |                   |                |                        |
 
+
+## 📦 Installation
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/Yawi-1/Dieticain.git
+cd Dieticain
+cd client
+npm install
+cd ../server
+npm install
+```
 ## 📸 Screenshots
 
 Coming soon...
