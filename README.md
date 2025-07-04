@@ -8,11 +8,11 @@ Nutricare is a full-stack web application tailored for professional dieticians t
 
 ## 🚀 Features
 
-- 🔐 **Authentication & Authorization** – Secure login and signup system using JWT
-- 💬 **Real-time Messaging** – Integrated with **Socket.io** for instant client-dietician interaction
+- 🔐 **Authentication & Authorization** – Secure login system for admin using JWT
+- 💬 **Real-time Updation** – Integrated with **Socket.io** for instant client-dietician interaction
 - 📧 **Email Integration** – Uses **Nodemailer** to send appointment confirmations and contact form responses
 - 📦 **Media Uploads** – Cloud storage powered by **Cloudinary** for profile images and content thumbnails
-- 🎨 **Beautiful Animations** – UI enhanced using **Framer Motion**
+- 🎨 **Beautiful Animations** – UI enhanced using **Framer Motion** & **AOS**
 - 📱 **Responsive Design** – Optimized for both desktop and mobile devices
 - ⚙️ **Admin Panel** – Manage users, appointments, and dietary content
 
@@ -27,6 +27,4 @@ Nutricare is a full-stack web application tailored for professional dieticians t
 ## 📸 Screenshots
 
 Coming soon...
-
-## 📁 Project Structure
 
