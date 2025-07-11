@@ -1,7 +1,9 @@
-import React, { useEffect, Suspense } from "react";
+import React, { useEffect, Suspense, useState } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { verifyAuth } from "./Redux/authSlice";
+import { fetchService } from "./Redux/serviceSlice";
+import { fetchBlogs } from "./Redux/blogSlice";
 import socket from "./utils/socket";
 import { addServiceFromSocket } from "./Redux/serviceSlice";
 import { addContactFromSocket } from "./Redux/contactSlice";
@@ -29,11 +31,23 @@ const Chatbot = React.lazy(() => import("./components/Chatbot/Chatbot"));
 
 const App = () => {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
+  const { user, isInitialized } = useSelector((state) => state.auth);
   const location = useLocation();
+  const [isAppReady, setIsAppReady] = useState(false);
 
   useEffect(() => {
-    dispatch(verifyAuth());
+    // Initialize auth and preload critical data
+    const initializeApp = async () => {
+      await dispatch(verifyAuth());
+      
+      // Preload critical data in parallel
+      Promise.all([
+        dispatch(fetchService()),
+        dispatch(fetchBlogs())
+      ]).catch(console.error);
+    };
+
+    initializeApp();
 
     const handleConnect = () => {
       console.log("🟢 Connected to Socket.IO server:", socket.id);
@@ -63,6 +77,29 @@ const App = () => {
       socket.off("new-contact", handleContact);
     };
   }, [dispatch]);
+
+  // Show loading until auth is initialized
+  useEffect(() => {
+    if (isInitialized) {
+      // Small delay to ensure smooth transition
+      setTimeout(() => setIsAppReady(true), 500);
+    }
+  }, [isInitialized]);
+
+  if (!isAppReady) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
+        <div className="text-center">
+          <div className="relative w-16 h-16 mx-auto mb-4">
+            <div className="absolute inset-0 rounded-full border-4 border-emerald-100"></div>
+            <div className="absolute inset-0 rounded-full animate-spin border-4 border-emerald-600 border-t-transparent"></div>
+          </div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">NutriCare</h2>
+          <p className="text-gray-600">Loading your health journey...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>

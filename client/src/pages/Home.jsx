@@ -8,10 +8,11 @@ import HeroImage from "/HomeImage.jpg";
 import FAQAccordion from "../components/Services/FAQAccordion ";
 import HomeServiceCard from "../components/Home/HomeServiceCard";
 import Testimonials from "../components/Home/Testimonials";
+import Loader from "../components/Modal/Loader";
 
 const Homepage = () => {
   const dispatch = useDispatch();
-  const { services } = useSelector((state) => state.service);
+  const { services, status } = useSelector((state) => state.service);
   const [featured, setFeatured] = useState([]);
 
   useEffect(() => {
@@ -28,7 +29,41 @@ const Homepage = () => {
     }
   }, [services]);
 
- 
+  // Show loading state while fetching services
+  if (status === 'loading') {
+    return (
+      <Layout>
+        <div className="min-h-screen py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
+          <div className="max-w-7xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-12">
+              Our Services
+            </h2>
+            <Loader type="service-skeleton" />
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  // Show error state if data fetching failed
+  if (status === 'failed') {
+    return (
+      <Layout>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-red-600 mb-4">Failed to load services</h2>
+            <button 
+              onClick={() => dispatch(fetchService())}
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
   return (
     <Layout>
       {/* Hero Section */}
@@ -63,15 +98,21 @@ const Homepage = () => {
             Our Services
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featured.map((service, index) => (
-              <HomeServiceCard
-                key={index}
-                title={service.title}
-                description={service.description}
-                image={service.image}
-                id={service._id}
-              />
-            ))}
+            {featured.length > 0 ? (
+              featured.map((service, index) => (
+                <HomeServiceCard
+                  key={index}
+                  title={service.title}
+                  description={service.description}
+                  image={service.image}
+                  id={service._id}
+                />
+              ))
+            ) : (
+              <div className="col-span-full text-center py-8">
+                <p className="text-gray-500">No services available at the moment.</p>
+              </div>
+            )}
           </div>
           <div className="mt-12 text-center">
             <Link

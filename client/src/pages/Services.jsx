@@ -6,9 +6,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchService } from "../Redux/serviceSlice";
 import { Link } from "react-router-dom";
 import { Filter, X } from "lucide-react";
+import Loader from "../components/Modal/Loader";
 
 const Services = () => {
-  const { services } = useSelector((state) => state.service);
+  const { services, status } = useSelector((state) => state.service);
   const dispatch = useDispatch();
   const [showFilters, setShowFilters] = useState(false);
   const [filteredServices, setFilteredServices] = useState(services);
@@ -53,6 +54,43 @@ const Services = () => {
     window.scrollTo(0, 0);
     dispatch(fetchService());
   }, [dispatch]);
+
+  // Show loading state while fetching services
+  if (status === 'loading') {
+    return (
+      <Layout>
+        <div className="min-h-screen w-full bg-gradient-to-br from-gray-50 to-blue-50 py-16 px-4 lg:px-8">
+          <div className="mx-auto">
+            <div className="text-center mb-16">
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 bg-clip-text bg-gradient-to-r from-blue-600 to-green-600">
+                Professional Nutrition Services
+              </h1>
+            </div>
+            <Loader type="service-skeleton" />
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  // Show error state if data fetching failed
+  if (status === 'failed') {
+    return (
+      <Layout>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-red-600 mb-4">Failed to load services</h2>
+            <button 
+              onClick={() => dispatch(fetchService())}
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
@@ -137,13 +175,21 @@ const Services = () => {
 
             {/* Service Cards Grid */}
             <div className="md:w-3/4">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredServices.map((service) => (
-                  <ServiceCard key={service._id} service={service} />
-                ))}
-              </div>
+              {services.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {filteredServices.map((service) => (
+                    <ServiceCard key={service._id} service={service} />
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <h3 className="text-xl font-medium text-gray-700">
+                    No services available at the moment
+                  </h3>
+                </div>
+              )}
               
-              {filteredServices.length === 0 && (
+              {filteredServices.length === 0 && services.length > 0 && (
                 <div className="text-center py-12">
                   <h3 className="text-xl font-medium text-gray-700">
                     No services match your filters
